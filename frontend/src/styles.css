@@ -1,0 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '../node_modules/primeng/resources/themes/nova-light/theme.css';
+@import '../node_modules/primeicons/primeicons.css';
+@import '../node_modules/primeng/resources/primeng.css';
+@import '../node_modules/primeng/resources/primeng.min.css';
+
+@font-face{
+    font-family: Roboto;
+    src: url(assets/font/Roboto-Regular.ttf);
+}
+
+body{
+    height: 100%;
+    min-height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    font-family: Roboto;
+}
+
+
+

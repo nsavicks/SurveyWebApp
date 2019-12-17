@@ -1,0 +1,30 @@
+#page-container{
+    position: relative;
+    min-height: 100vh;
+}
+
+#main-nav{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #e74c3c;
+}
+
+
+#main-content{
+    padding-bottom: 50px;
+    overflow-y: auto;
+}
+
+#footer{
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+    padding: 20px;
+    background: #37474F;
+    color: white;
+}
