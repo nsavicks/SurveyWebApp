@@ -28,3 +28,8 @@
     background: #37474F;
     color: white;
 }
+
+li.active{
+    border-radius: 5px;
+    background: #bb3a2c;
+}

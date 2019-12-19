@@ -31,3 +31,12 @@ app.route('/').get((req, res) => {
 // User
 app.use('/api/users', require('./routes/user-routes'));
 
+// Survey test
+app.use('/api/survey-test', require('./routes/survey-test-routes'));
+
+// Work
+app.use('/api/work', require('./routes/work-routes'));
+
+// Answer
+app.use('/api/answer', require('./routes/answer-routes'));
+

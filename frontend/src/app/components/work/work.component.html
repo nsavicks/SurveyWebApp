@@ -1,0 +1,63 @@
+<div id="work-container">
+    
+    <h1 *ngIf="current">{{current.title}}</h1>
+    <h5 *ngIf="current.type == 1"><i class="fa fa-stopwatch"></i> {{current.duration - elapsed}}s</h5>
+
+    <form name="survey-form">
+        <div class="card single-question" *ngFor="let q of questions; let i = index">
+            <div class="card-body">
+                <div>
+                    <h2>{{i+1}}. {{q.text}}</h2>
+                    <h5 *ngIf="current.type == 1"><span class="badge badge-success">{{q.points}} point(s)</span></h5>
+                </div>
+                
+                <hr/>
+                <div [ngSwitch]="q.type">
+                    <div *ngSwitchCase="1">
+                        <div class="form-group" *ngFor="let label of q.labels; let j = index">
+                            <label for="number_input_{{q.id}}">{{label}}</label>
+                            <input type="number" class="form-control" name="number_input_{{q.id}}" [(ngModel)]="answers[i].answers[j]" (change)="handleChange(i)">
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="2">
+                        <div class="form-group" *ngFor="let label of q.labels; let j = index">
+                            <label for="text_input_{{q.id}}">{{label}}</label>
+                            <input type="text" class="form-control" name="text_input_{{q.id}}" [(ngModel)]="answers[i].answers[j]"  (change)="handleChange(i)">
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="3">
+                        <div class="form-group" *ngFor="let label of q.labels; let j = index">
+                            <label for="textarea_input_{{q.id}}">{{label}}</label>
+                            <textarea class="form-control" name="textarea_input_{{q.id}}" rows="5" [(ngModel)]="answers[i].answers[j]" (change)="handleChange(i)"></textarea>
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="4">
+                        <div class="form-check" *ngFor="let label of q.labels; let j = index">
+                            <input class="form-check-input" type="radio" name="radio_input_{{q.id}}" value="{{j}}" (change)="handleCheck(i,j)">
+                            <label class="form-check-label" for="radio_input_{{q.id}}">
+                              {{label}}
+                            </label>
+                          </div>
+                    </div>
+                    <div *ngSwitchCase="5">
+                        <div class="form-check" *ngFor="let label of q.labels; let j = index">
+                            <input class="form-check-input" type="checkbox" value="{{j}}" name="input_check_{{q.id}}" (change)="handleCheck(i,j)">
+                            <label class="form-check-label" for="input_check_{{q.id}}">
+                                {{label}}
+                            </label>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress">
+            <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [attr.aria-valuenow]="percent" aria-valuemin="0" aria-valuemax="100">{{percent}}%</div>
+        </div>
+
+        <button type="button" (click)="Submit()" class="btn btn-block btn-success"><i class="fa fa-check"></i> Submit</button> 
+        <button type="button" (click)="Save()" class="btn btn-block btn-danger" *ngIf="current && current.type == 0" ><i class="fa fa-save"></i> Save</button> 
+
+    </form>
+
+</div>

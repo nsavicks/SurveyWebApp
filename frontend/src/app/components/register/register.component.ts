@@ -4,6 +4,7 @@ import { UsersService } from '../../services/api/users.service';
 import { Router } from '@angular/router'
 import { User } from '../../models/user.model';
 
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -56,7 +57,7 @@ export class RegisterComponent implements OnInit {
 
     this.userService.getCountUsersWithEmail(this.user.email).subscribe(
       data => {
-        
+
         if (data.count >= 2){
           this.errorMessage += "*E-mail address is already associated with two accounts.";
           this.showError = true;

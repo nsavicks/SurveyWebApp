@@ -12,8 +12,6 @@ const httpOptions = {
 })
 export class UsersService {
 
-  private header = new HttpHeaders({ 'Content-Type': 'application/json' })
-
   constructor(private http: HttpClient) { }
 
   getAllUsers(): Observable<User[]> {

@@ -1,0 +1,57 @@
+<div id="single-container">
+
+    <h1>{{current.title}}</h1>
+
+    <div class="survey-desc-item">
+        <h6><i class="fa fa-hashtag"></i> ID</h6>
+        {{current.id}}
+    </div>
+
+    <div class="survey-desc-item">
+        <h6><i class="fa fa-edit"></i> Description</h6>
+        {{current.description}}
+    </div>
+
+    <div class="survey-desc-item">
+        <h6><i class="fa fa-calendar"></i> Start time</h6>
+        {{current.start | date:'dd-MM-yyyy'}}
+    </div>
+
+    <div class="survey-desc-item">
+        <h6><i class="fa fa-calendar"></i> End time</h6>
+        {{current.end | date:'dd-MM-yyyy'}}
+    </div>
+
+    <div class="survey-desc-item" *ngIf="current && current.type == 1">
+        <h6><i class="fa fa-stopwatch"></i> Duration(s)</h6>
+        {{current.duration}}
+    </div>
+
+    <div class="survey-desc-item">
+        <h6><i class="fa fa-poll-h"></i> Type</h6>
+        {{current.type == 0 ? 'Survey' : 'Test'}}
+    </div>
+
+    <div class="survey-desc-item">
+        <h6><i class="fa fa-user"></i> Author</h6>
+        {{current.author}}
+    </div>
+
+    <div class="survey-desc-item">
+        <h6><i class="fa fa-mask"></i> Anonymous</h6>
+        {{current.anonymous == 0 ? 'No': 'Yes'}}
+    </div>
+
+    <div class="survey-desc-item">
+        <h6><i class="fa fa-check-square"></i> Finished</h6>
+        {{!work || work.finished == 0 ? 'No': 'Yes'}}
+    </div>
+    
+    <div class="survey-desc-buttons">
+        <button type="button" class="btn btn-danger" *ngIf="(!work || work.finished == 0) && current.author != currentUser.username" [routerLink]="['/work', current.id]"><i class="fa fa-edit"></i> Fill</button>
+        <button type="button" class="btn btn-success" *ngIf="work && work.finished == 1 && current.author != currentUser.username" [routerLink]="['/result', current.id]"><i class="fa fa-eye"></i> Show result</button>
+        <button type="button" class="btn btn-danger" *ngIf="current.author == currentUser.username" [routerLink]="['/report', current.id]"><i class="fa fa-poll"></i> Show report</button>
+    </div>
+    
+
+</div>

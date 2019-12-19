@@ -19,6 +19,13 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import { AdministratorGuardService } from './services/auth/administrator-guard/administrator-guard.service';
+import { RouterModule } from '@angular/router';
+import { HomeComponent } from './components/home/home.component';
+import { AddSurveyComponent } from './components/add-survey/add-survey.component';
+import { SingleComponent } from './components/single/single.component';
+import { WorkComponent } from './components/work/work.component';
+import { ResultComponent } from './components/result/result.component';
+import { ReportComponent } from './components/report/report.component';
 
 export function getToken(){
   return localStorage.getItem('token');
@@ -29,7 +36,13 @@ export function getToken(){
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    DashboardComponent
+    DashboardComponent,
+    HomeComponent,
+    AddSurveyComponent,
+    SingleComponent,
+    WorkComponent,
+    ResultComponent,
+    ReportComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +59,8 @@ export function getToken(){
     HttpClientModule,
     JwtModule.forRoot({config: {
       tokenGetter: getToken
-    }})
+    }}),
+    RouterModule
   ],
   providers: [JwtHelperService, AdministratorGuardService],
   bootstrap: [AppComponent]

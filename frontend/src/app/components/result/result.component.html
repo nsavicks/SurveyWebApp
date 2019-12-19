@@ -1,0 +1,28 @@
+
+<div id="result-container">
+
+    <h1>{{current.title}}</h1>
+    <h5><i class="fa fa-user"></i> {{qa[0].username}}</h5>
+    <h5 *ngIf="current.type == 1"><i class="fa fa-stopwatch"></i> {{qa[0].time}}</h5>
+    <h5 *ngIf="current.type == 1"><i class="fa fa-star"></i> {{qa[0].total_points  | number : '1.2-2' }} / {{maxPoints}}</h5>
+
+    <div class="card single-question" *ngFor="let q of qa; let i = index">
+        <div class="card-body">
+            <div>
+                <h2>{{i+1}}. {{q.text}}</h2>
+                <h5 *ngIf="current.type == 1"><span class="badge badge-success">{{qa[i].won_points | number : '1.2-2'}} / {{q.points}}</span></h5>
+            </div>
+            <hr/>
+            <div *ngFor="let l of solutions[i].labels; let j = index">
+                <h5>{{l}}</h5>
+                <p *ngIf="current.type == 1">
+                    Correct answer(s): <b>{{solutions[i].correct[j]}}</b>
+                </p>
+                <p>
+                    Your answer(s): <b>{{answers[i][j]}}</b>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+</div>

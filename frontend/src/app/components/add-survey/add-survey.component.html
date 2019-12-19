@@ -1,0 +1,157 @@
+<div id="add-container">
+
+    <form name="add-form">
+        <h2>Survey/Test info</h2>
+        <hr/>
+
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" [(ngModel)]="current.title" name="title">
+        </div>
+
+        <div class="form-group">
+            <label for="desc">Description</label>
+            <textarea class="form-control" id="desc" rows="5" [(ngModel)]="current.description" name="desc"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="type">Type</label>
+            <select class="form-control" name="type" [(ngModel)]="current.type">
+                <option value="0">Survey</option>
+                <option value="1">Test</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="start">Start date</label>
+            <input type="datetime-local" class="form-control" name="start" [(ngModel)]="current.start">
+        </div>
+
+        <div class="form-group">
+            <label for="end">End date</label>
+            <input type="datetime-local" class="form-control" name="end" [(ngModel)]="current.end">
+        </div>
+
+        <div class="form-group" *ngIf="current.type == 1">
+            <label for="duration">Duration</label>
+            <input type="number" class="form-control" name="duration" [(ngModel)]="current.duration">
+        </div>
+
+        <div class="form-group" *ngIf="current.type == 0">
+            <label for="pages">Number of pages</label>
+            <input type="number" class="form-control" name="pages" [(ngModel)]="current.pages">
+        </div>
+
+        <div class="form-group" *ngIf="current.type == 0">
+            <input class="form-check-input" type="checkbox" name="anon" [(ngModel)]="anonChecked">
+            <label class="form-check-label" for="anon">
+                Anonymous
+            </label>
+        </div>
+
+        <div class="form-group" *ngIf="current.type == 1">
+            <input class="form-check-input" type="checkbox" name="shuffle" [(ngModel)]="shuffleChecked">
+            <label class="form-check-label" for="shuffle">
+                Shuffle
+            </label>
+        </div>
+
+        <h2>Question(s)</h2>
+        <hr/>
+
+        <div class="dropdown">
+            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-plus"></i> Add question
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" (click)="CreateQuestion(1)">Input number</a>
+              <a class="dropdown-item" (click)="CreateQuestion(2)">Input text</a>
+              <a class="dropdown-item" *ngIf="current.type == 0" (click)="CreateQuestion(3)">Input textarea</a>
+              <a class="dropdown-item" (click)="CreateQuestion(4)">Input radio button</a>
+              <a class="dropdown-item" (click)="CreateQuestion(5)">Input checkbox</a>
+            </div>
+
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#database-questions" aria-expanded="false" aria-controls="collapseExample">
+                <i class="fa fa-database"></i> Question database
+            </button>
+        </div>
+
+        <div class="collapse" id="database-questions">
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">#ID</th>
+                    <th scope="col">Text</th>
+                    <th scope="col">Type</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let dq of databaseQuestions">
+                    <th scope="row">{{dq.id}}</th>
+                    <td>{{dq.text}}</td>
+                    <td>{{dq.type}}</td>
+                    <td>
+                        <button type="button" (click)="AddFromDatabase(dq)" class="btn btn-danger"><i class="fa fa-plus"></i> Add</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+
+        <div class="card single-question" *ngFor="let q of questions; let i = index">
+            <div class="card-body">
+                <div class="question-header">
+                    <div>
+                        <h2>Question #{{i+1}}</h2>
+                        <h6><i>{{type == 'Survey' ? surveyTypes[q.type - 1] : testTypes[q.type - 1]}}</i></h6>
+                    </div>
+                    <i class="fa fa-trash" (click)="RemoveQuestion(i)"></i>
+                </div>
+                
+                <hr/>
+
+                <div class="form-group">
+                    <label for="text">Question text</label>
+                    <input type="text" class="form-control" name="text_{{i}}" [(ngModel)]="q.text">
+                </div>
+
+                <div class="form-group" *ngIf="current.type == 1">
+                    <label for="points">Question points</label>
+                    <input type="number" class="form-control" name="points_{{i}}" [(ngModel)]="q.points">
+                </div>
+
+                <button type="button" class="btn btn-success" (click)="AddField(i)"><i class="fa fa-plus"></i> Add field</button>
+                
+                <div class="single-field" *ngFor="let label of q.labelsWrapper; let j = index">
+
+                    <div class="field-header">
+                        <h4>Field #{{j}}</h4>
+                        <i class="fa fa-trash" (click)="RemoveField(i,j)"></i>
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                        <label for="label">Field label</label>
+                        <input type="text" class="form-control" name="label_{{i}}_{{j}}" [(ngModel)]="q.labelsWrapper[j].value">
+                    </div>
+
+                    <div class="form-group" *ngIf="current.type == 1">
+                        <label for="sol">Field solution</label>
+                        <input type="text" class="form-control" name="sol_{{i}}_{{j}}" [(ngModel)]="q.correctWrapper[j].value">
+                        <small class="form-text text-muted">
+                            * For checkbox and radio button fields set this field to 1 (for checked) or leave empty
+                        </small>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <hr/>
+
+        <button type="button" (click)="Submit()" class="btn btn-block btn-success"><i class="fa fa-check"></i> Submit</button> 
+
+    </form>
+
+</div>

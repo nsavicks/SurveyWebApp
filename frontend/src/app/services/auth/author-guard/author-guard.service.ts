@@ -6,13 +6,13 @@ import decode from 'jwt-decode'
 @Injectable({
   providedIn: 'root'
 })
-export class AdministratorGuardService implements CanActivate{
-  
+export class AuthorGuardService implements CanActivate{
+
   constructor(public authService: AuthService, public router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
 
-    const expectedType = 2;
+    const expectedType = 1;
 
     const token = localStorage.getItem('token');
 
@@ -25,7 +25,8 @@ export class AdministratorGuardService implements CanActivate{
 
     console.log(tokenPayload);
 
-    if (!this.authService.isAuthenticated() || tokenPayload.user.type != expectedType){
+    if (!this.authService.isAuthenticated() || tokenPayload.user.type < expectedType){
+    
       this.router.navigate(['home']);
       return false;
     }
@@ -34,5 +35,4 @@ export class AdministratorGuardService implements CanActivate{
     }
 
   }
-
 }

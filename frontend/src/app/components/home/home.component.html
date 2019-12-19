@@ -1,0 +1,81 @@
+<div id="home-container">
+
+    <div id="home-filter">
+        <h3>All surveys</h3>
+        <form>
+            <div class="input-group">
+                <select class="form-control" id="filter-surveys">
+                    <option>First name ASC</option>
+                    <option>First name DESC</option>
+                    <option>Start date ASC</option>
+                    <option>Start date DESC</option>
+                    <option>End date ASC</option>
+                    <option>End date DESC</option>
+                  </select>
+            </div>   
+        </form>
+    </div>
+    
+    <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Anonymous</th>
+            <th scope="col">Start date</th>
+            <th scope="col">End date</th>
+            <th scope="col">Author</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let survey of allSurveys" [routerLink]="['/single', survey.id]">
+                <th scope="row">{{survey.id}}</th>
+                <td>{{survey.title}}</td>
+                <td>{{survey.anonymous}}</td>
+                <td>{{survey.start | date:'dd-MM-yyyy'}}</td>
+                <td>{{survey.end | date:'dd-MM-yyyy'}}</td>
+                <td>{{survey.author}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div id="home-filter">
+        <h3>All tests</h3>
+        <form>
+            <div class="input-group">
+                <select class="form-control" id="filter-tests">
+                    <option>First name ASC</option>
+                    <option>First name DESC</option>
+                    <option>Start date ASC</option>
+                    <option>Start date DESC</option>
+                    <option>End date ASC</option>
+                    <option>End date DESC</option>
+                  </select>
+            </div>   
+        </form>
+    </div>
+    
+    <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Start date</th>
+            <th scope="col">End date</th>
+            <th scope="col">Duration(s)</th>
+            <th scope="col">Author</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let survey of allTests" [routerLink]="['/single', survey.id]">
+                <th scope="row">{{survey.id}}</th>
+                <td>{{survey.title}}</td>
+                <td>{{survey.start | date:'dd-MM-yyyy'}}</td>
+                <td>{{survey.end | date:'dd-MM-yyyy'}}</td>
+                <td>{{survey.duration}}</td>
+                <td>{{survey.author}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

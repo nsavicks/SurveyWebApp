@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../services/api/users.service';
 import { Router } from '@angular/router';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
   showError: boolean = false;
   errorMessage: string = "";
 
-  constructor(private userService: UsersService, private router: Router) { }
+  constructor(private userService: UsersService, private router: Router, private appComponent: AppComponent) { }
 
   ngOnInit() {
     this.showError = false;
@@ -41,17 +42,9 @@ export class LoginComponent implements OnInit {
             this.userService.getToken(user).subscribe(
               token => {
                 console.log(token);
-                localStorage.setItem('token', token);
-
-                if (user.type == 0){
-
-                }
-                else if (user.type == 1){
-
-                }
-                else if (user.type == 2){
-                  this.router.navigate(['dashboard']);
-                }
+                localStorage.setItem('token', token.toString());
+                this.appComponent.changeLoggedInType(user.type);
+                this.router.navigate(['home']);
               }
             );
 

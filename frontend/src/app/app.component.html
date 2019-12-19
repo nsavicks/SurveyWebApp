@@ -8,24 +8,18 @@
       </button>
       <div class="collapse navbar-collapse navbar-right" id="navbarNav">
         <ul class="nav navbar-nav navbar-right">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Dashboard</a>
+          <li class="nav-item active" id="nav-home" *ngIf="loggedInType >= 0">
+            <a class="nav-link" href="#" routerLink="home">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Features</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          <li class="nav-item" id="nav-add-survey-test" *ngIf="loggedInType >= 1">
+            <a class="nav-link" href="#" routerLink="add-survey-test">Add Survey/Test</a>
           </li>
         </ul>
         <ul class="nav navbar-nav ml-auto">
-          <li><a href="#" routerLink="login" class="nav-link"><i class="fa fa-sign-in"></i> Login</a></li>
-          <li><a href="#" routerLink="register" class="nav-link"><i class="fa fa-user-plus"></i> Register</a></li>
-          <li><a href="#" (click)="logout()" class="nav-link"><i class="fa fa-user"></i> Profile</a></li>
-          <li><a href="#" (click)="logout()" class="nav-link"><i class="fa fa-sign-out"></i> Logout</a></li>
+          <li *ngIf="loggedInType == -1"><a href="#" routerLink="login" class="nav-link"><i class="fa fa-sign-in"></i> Login</a></li>
+          <li *ngIf="loggedInType == -1"><a href="#" routerLink="register" class="nav-link"><i class="fa fa-user-plus"></i> Register</a></li>
+          <li *ngIf="loggedInType >= 2"><a href="#" routerLink="dashboard" class="nav-link"><i class="fa fa-shield"></i> Dashboard</a></li>
+          <li *ngIf="loggedInType >= 0"><a href="#" (click)="Logout()" class="nav-link"><i class="fa fa-sign-out"></i> Logout</a></li>
         </ul>
       </div>
     </nav>
