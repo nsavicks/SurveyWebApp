@@ -5,6 +5,7 @@ import { Question, StringWraper } from 'src/app/models/question.model';
 import { SurveyTest } from 'src/app/models/survey-test.model';
 import decode from 'jwt-decode'
 import { User } from 'src/app/models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-survey',
@@ -22,10 +23,12 @@ export class AddSurveyComponent implements OnInit {
   anonChecked: boolean;
   shuffleChecked: boolean;
   currentUser: User;
+  inputFile: File;
 
   constructor(
     private appComponent: AppComponent,
-    private surveyTestService: SurveyTestService) { }
+    private surveyTestService: SurveyTestService,
+    private router: Router) { }
 
   ngOnInit() {
 
@@ -103,7 +106,33 @@ export class AddSurveyComponent implements OnInit {
     this.questions.push(dq);
   }
 
-  Submit(){
+  AddHasQuestionToDatabase(q, i){
+    this.surveyTestService.addHasQuestion(this.current, q, i, q.points).subscribe(
+      res => {
+        
+      }
+    );
+  }
+
+  AddQuestionToDatabase(q, i){
+
+    this.surveyTestService.addQuestion(q).subscribe(
+      qid => {
+
+        q.id = qid.id;
+
+        this.surveyTestService.addHasQuestion(this.current, q, i, q.points).subscribe(
+          res => {
+            
+          }
+        );
+
+      }
+    );
+
+  }
+
+  Submit(fromJSON: boolean){
     
     if (this.anonChecked){
       this.current.anonymous = 1;
@@ -133,7 +162,9 @@ export class AddSurveyComponent implements OnInit {
 
       for (var j = 0; j < this.questions[i].labelsWrapper.length; j++){
         this.questions[i].labels.push(this.questions[i].labelsWrapper[j].value);
-        this.questions[i].correct.push(this.questions[i].correctWrapper[j].value);
+        if (this.current.type == 1){
+          this.questions[i].correct.push(this.questions[i].correctWrapper[j].value);
+        }
       }
 
       this.questions[i].solutions = `{"labels": `
@@ -151,6 +182,8 @@ export class AddSurveyComponent implements OnInit {
         
         for (var i = 0; i < this.questions.length; i++){
 
+          console.log(i);
+
           var q = this.questions[i];
 
           if (!q.points){
@@ -163,40 +196,109 @@ export class AddSurveyComponent implements OnInit {
 
             // Question is from database
             
-            this.surveyTestService.addHasQuestion(this.current, q, i, q.points).subscribe(
-              res => {
-                
-              }
-            );
+            this.AddHasQuestionToDatabase(q, i);
 
           }
           else{
             // Question doesnt exist in database
 
-            this.surveyTestService.addQuestion(q).subscribe(
-              qid => {
-  
-                // console.log(q);
-                q.id = qid.id;
-  
-                this.surveyTestService.addHasQuestion(this.current, q, i, q.points).subscribe(
-                  res => {
-                    
-                  }
-                );
-  
-              }
-            );
+            this.AddQuestionToDatabase(q, i);
 
           }
 
-          
-
         }
+
+        this.router.navigate(['home']);
 
       }
     );
 
   }
 
+  HandleFileChange(files: FileList){
+
+    this.inputFile = files.item(0);
+    console.log(this.inputFile);
+
+  }
+
+  LoadFromJSON(){
+    var fr = new FileReader();
+
+    fr.onload = (e) => {
+      
+      var data = fr.result.toString();
+      var jsonObj = JSON.parse(data);
+
+      this.current.title = jsonObj.Quiz.title;
+      this.current.description = jsonObj.Quiz.description;
+      this.current.start = jsonObj.Quiz.start;
+      this.current.end = jsonObj.Quiz.end;
+      this.current.duration = jsonObj.Quiz.duration;
+      this.current.type = jsonObj.Quiz.type;
+      this.current.pages = jsonObj.Quiz.pages;
+      this.current.anonymous = jsonObj.Quiz.anonymous;
+      this.current.shuffle = jsonObj.Quiz.shuffle;
+
+      if (this.current.anonymous && this.current.anonymous == 1){
+        this.anonChecked = true;
+      }
+
+      if (this.current.shuffle && this.current.shuffle == 1){
+        this.shuffleChecked = true;
+      }
+
+      console.log(this.current);
+
+      this.questions = [];
+      
+      jsonObj.Questions.forEach(q => {
+        var quest = new Question();
+
+        quest.text = q.text;
+        quest.type = q.type;
+        quest.points = q.points;
+        quest.labelsWrapper = [];
+        quest.correctWrapper = [];
+        quest.labels = [];
+        quest.correct = [];
+
+        for (var i = 0; i < q.labels.length; i++){
+          quest.labelsWrapper.push(new StringWraper(q.labels[i]));
+          if (q.correct){
+            quest.correctWrapper.push(new StringWraper(q.correct[i]));
+          }
+        }
+
+        //console.log(quest);
+
+        this.questions.push(quest);
+
+      });
+
+    };
+
+    fr.readAsText(this.inputFile);
+
+  }
+
+  MoveUp(i){
+
+    if (i == 0) return;
+
+    let tmp = this.questions[i];
+    this.questions[i] = this.questions[i-1];
+    this.questions[i-1] = tmp;
+
+  }
+
+  MoveDown(i){
+    
+    if (i == this.questions.length - 1) return;
+
+    let tmp = this.questions[i];
+    this.questions[i] = this.questions[i+1];
+    this.questions[i+1] = tmp;
+
+  }
 }

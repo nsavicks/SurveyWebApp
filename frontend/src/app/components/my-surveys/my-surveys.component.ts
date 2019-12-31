@@ -2,39 +2,47 @@ import { Component, OnInit } from '@angular/core';
 import { AppComponent } from 'src/app/app.component';
 import { SurveyTestService } from 'src/app/services/api/survey-test.service';
 import { SurveyTest } from 'src/app/models/survey-test.model';
-import { formatDate } from '@angular/common';
+import { User } from 'src/app/models/user.model';
+import decode from 'jwt-decode'
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-my-surveys',
+  templateUrl: './my-surveys.component.html',
+  styleUrls: ['./my-surveys.component.css']
 })
-export class HomeComponent implements OnInit {
+export class MySurveysComponent implements OnInit {
 
   allSurveys: SurveyTest[];
   allTests: SurveyTest[];
   filterSurvey: string;
   filterTest: string;
+  currentUser: User;
 
-  constructor(private appComponent: AppComponent, private surveyTestService: SurveyTestService) { }
+  constructor(
+    private appComponent: AppComponent,
+    private surveyTestService: SurveyTestService
+  ) { }
 
   ngOnInit() {
 
-    this.appComponent.ChangeNavigationActive("home");
-    this.appComponent.changeHeader("Home", "home");
+    this.appComponent.ChangeNavigationActive("my-surveys-tests");
+    this.appComponent.changeHeader("My Surveys/Tests", "list-ol");
 
-    this.surveyTestService.getAllSurveys().subscribe(
+    var token = localStorage.getItem('token');
+    var tokenPayload = decode(token);
+    this.currentUser = tokenPayload.user;
+
+    this.surveyTestService.getAllSurveysForAuthor(this.currentUser.username).subscribe(
       surveys => {
         this.allSurveys = surveys;
-        console.log(this.allSurveys);
       }
     );
 
-    this.surveyTestService.getAllTests().subscribe(
+    this.surveyTestService.getAllTestsForAuthor(this.currentUser.username).subscribe(
       tests => {
         this.allTests = tests;
       }
-    );
+    )
 
   }
 
@@ -182,5 +190,7 @@ export class HomeComponent implements OnInit {
 
   }
 
-
+  Delete(item){
+    console.log("OPZOVA");
+  }
 }

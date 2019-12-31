@@ -131,6 +131,21 @@ router.get('/getUser/:username', (req, res) => {
 
 });
 
+// Get user with username
+router.get('/getUserJMBG/:jmbg', (req, res) => {
+
+    User.findOne({
+        where: {
+            JMBG: req.params['jmbg']
+        }
+    }).then(
+        user => {
+            res.send(user);
+        }
+    );
+
+});
+
 // Get token for username
 router.post('/getToken', (req, res) => {
 
@@ -156,6 +171,26 @@ router.put('/acceptUser/:username', (req, res) => {
     User.update(
         {
             status: 1
+        },
+        {
+            where: {
+                username: req.params['username']
+            }
+        }
+    ).then(
+        user => {
+            res.json(user);
+        }
+    );
+
+});
+
+// Change user password
+router.put('/change-password/:username&:newPassword', (req, res) => {
+
+    User.update(
+        {
+            password: req.params['newPassword']
         },
         {
             where: {

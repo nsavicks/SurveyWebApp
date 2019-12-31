@@ -42,12 +42,20 @@ export class UsersService {
     return this.http.get<User>('http://localhost:5000/api/users/getUser/' + username,  httpOptions);
   }
 
+  getUserWithJMBG(jmbg: string){
+    return this.http.get<User>('http://localhost:5000/api/users/getUserJMBG/' + jmbg,  httpOptions);
+  }
+
   getToken(user: User){
     return this.http.post('http://localhost:5000/api/users/getToken', user, httpOptions);
   }
 
   acceptUser(username: string){
     return this.http.put('http://localhost:5000/api/users/acceptUser/' + username, httpOptions);
+  }
+
+  changePassword(username: string, password: string){
+    return this.http.put('http://localhost:5000/api/users/change-password/' + username + "&" + password, httpOptions);
   }
 
   deleteUser(username: string){

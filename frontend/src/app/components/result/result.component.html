@@ -1,9 +1,7 @@
 
 <div id="result-container">
-
-    <h1>{{current.title}}</h1>
-    <h5><i class="fa fa-user"></i> {{qa[0].username}}</h5>
-    <h5 *ngIf="current.type == 1"><i class="fa fa-stopwatch"></i> {{qa[0].time}}</h5>
+    
+    <h5 *ngIf="current.type == 1"><i class="fa fa-stopwatch"></i> {{qa[0].time}}s</h5>
     <h5 *ngIf="current.type == 1"><i class="fa fa-star"></i> {{qa[0].total_points  | number : '1.2-2' }} / {{maxPoints}}</h5>
 
     <div class="card single-question" *ngFor="let q of qa; let i = index">

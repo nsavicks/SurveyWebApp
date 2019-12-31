@@ -9,20 +9,28 @@
       <div class="collapse navbar-collapse navbar-right" id="navbarNav">
         <ul class="nav navbar-nav navbar-right">
           <li class="nav-item active" id="nav-home" *ngIf="loggedInType >= 0">
-            <a class="nav-link" href="#" routerLink="home">Home</a>
+            <a class="nav-link" href="#" routerLink="home"><i class="fa fa-home"></i> Home</a>
           </li>
           <li class="nav-item" id="nav-add-survey-test" *ngIf="loggedInType >= 1">
-            <a class="nav-link" href="#" routerLink="add-survey-test">Add Survey/Test</a>
+            <a class="nav-link" href="#" routerLink="add-survey-test"><i class="fa fa-plus"></i> Add Survey/Test</a>
+          </li>
+          <li class="nav-item" id="nav-my-surveys-tests" *ngIf="loggedInType >= 1">
+            <a class="nav-link" href="#" routerLink="my-surveys-tests"><i class="fa fa-list-ol"></i> My Surveys/Tests</a>
           </li>
         </ul>
         <ul class="nav navbar-nav ml-auto">
           <li *ngIf="loggedInType == -1"><a href="#" routerLink="login" class="nav-link"><i class="fa fa-sign-in"></i> Login</a></li>
           <li *ngIf="loggedInType == -1"><a href="#" routerLink="register" class="nav-link"><i class="fa fa-user-plus"></i> Register</a></li>
           <li *ngIf="loggedInType >= 2"><a href="#" routerLink="dashboard" class="nav-link"><i class="fa fa-shield"></i> Dashboard</a></li>
+          <li *ngIf="loggedInType >= 0"><a href="#" routerLink="change-password" class="nav-link"><i class="fa fa-key"></i> Change password</a></li>
           <li *ngIf="loggedInType >= 0"><a href="#" (click)="Logout()" class="nav-link"><i class="fa fa-sign-out"></i> Logout</a></li>
         </ul>
       </div>
     </nav>
+
+    <div class="parallax">
+      <h2><i class="fa fa-{{icon}}"></i> {{header}}</h2>
+    </div>
 
     <div id="main-content">
       <router-outlet></router-outlet>

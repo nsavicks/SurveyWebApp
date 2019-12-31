@@ -18,6 +18,10 @@ export class AnswerService {
     return this.http.get<Answer>('http://localhost:5000/api/answer/getAnswer/' + qid + '&' + username + '&' + sid);
   }
 
+  getQuestionAnswers(qid, sid): Observable<Answer[]> {
+    return this.http.get<Answer[]>('http://localhost:5000/api/answer/getQuestionAnswers/' + qid + '&' + sid);
+  }
+
   addAnswer(answer, points) {
     return this.http.post('http://localhost:5000/api/answer/add', [answer, points]);
   }

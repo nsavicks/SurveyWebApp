@@ -20,6 +20,8 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.showError = false;
     this.errorMessage = "";
+
+    this.appComponent.changeHeader("Login", "sign-in");
   }
 
   login(){
@@ -39,15 +41,23 @@ export class LoginComponent implements OnInit {
           }
           else{
 
-            this.userService.getToken(user).subscribe(
-              token => {
-                console.log(token);
-                localStorage.setItem('token', token.toString());
-                this.appComponent.changeLoggedInType(user.type);
-                this.router.navigate(['home']);
-              }
-            );
+            if (user.status == 0){
+              this.showError = true;
+              this.errorMessage = "*User account is not activated.";
+            }
+            else{
 
+              this.userService.getToken(user).subscribe(
+                token => {
+                  console.log(token);
+                  localStorage.setItem('token', token.toString());
+                  this.appComponent.changeLoggedInType(user.type);
+                  this.router.navigate(['home']);
+                }
+              );
+
+            }
+            
           }
         }
       }

@@ -19,8 +19,16 @@ export class SurveyTestService {
     return this.http.get<SurveyTest[]>('http://localhost:5000/api/survey-test/surveys');
   }
 
+  getAllSurveysForAuthor(username): Observable<SurveyTest[]> {
+    return this.http.get<SurveyTest[]>('http://localhost:5000/api/survey-test/surveys/' + username);
+  }
+
   getAllTests(): Observable<SurveyTest[]> {
     return this.http.get<SurveyTest[]>('http://localhost:5000/api/survey-test/tests');
+  }
+
+  getAllTestsForAuthor(username): Observable<SurveyTest[]> {
+    return this.http.get<SurveyTest[]>('http://localhost:5000/api/survey-test/tests/' + username);
   }
 
   getSingle(id): Observable<SurveyTest> {
@@ -49,6 +57,10 @@ export class SurveyTestService {
 
   addHasQuestion(survey, question, ord, points) {
     return this.http.post('http://localhost:5000/api/survey-test/addHasQuestion', [survey, question, ord, points]);
+  }
+
+  deleteSurveyTest(sid){
+    return this.http.delete('http://localhost:5000/api/survey-test/delete/' + sid, httpOptions);
   }
 
 }

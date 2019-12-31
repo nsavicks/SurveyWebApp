@@ -14,10 +14,44 @@ router.get('/surveys', (req,res) => {
 
 });
 
+// Get all surveys for author
+router.get('/surveys/:author', (req,res) => {
+
+    db.query("select * from survey_test where type = 0 AND author = :author",
+    {
+        replacements: {
+            author: req.params['author']
+        }
+    }
+    )
+    .then(([result, metadata]) => {
+        //console.log(result);
+        res.send(result);
+    });
+
+});
+
 // Get all tests
 router.get('/tests', (req,res) => {
 
     db.query("select * from survey_test where type = 1")
+    .then(([result, metadata]) => {
+        //console.log(result);
+        res.send(result);
+    });
+
+});
+
+// Get all tests for author
+router.get('/tests/:author', (req,res) => {
+
+    db.query("select * from survey_test where type = 1 AND author = :author",
+    {
+        replacements: {
+            author: req.params['author']
+        }
+    }
+    )
     .then(([result, metadata]) => {
         //console.log(result);
         res.send(result);
@@ -39,7 +73,7 @@ router.get('/getSingle/:id', (req,res) => {
 // Get questions for survey/test
 router.get('/getQuestions/:id', (req,res) => {
 
-    db.query("select q.*, hq.* from has_question hq, question q, survey_test st where hq.question_id = q.id AND hq.survey_test_id = st.id AND st.id = :id", {replacements: {id: req.params['id']}})
+    db.query("select q.*, hq.* from has_question hq, question q, survey_test st where hq.question_id = q.id AND hq.survey_test_id = st.id AND st.id = :id order by hq.order_number ASC", {replacements: {id: req.params['id']}})
     .then(([result, metadata]) => {
         //console.log(result);
         res.send(result);
@@ -164,6 +198,21 @@ router.post('/addHasQuestion', (req,res) => {
         res.json({id: result});
     });
 
+});
+
+// Delete survey-test
+router.delete('/delete/:sid/',(req, res) => {
+    
+    db.query(`DELETE FROM survey_test where id = :id`, 
+    {
+        replacements: {
+            id : req.params['sid']
+        }
+    }
+    )
+    .then(([result, metadata]) => {
+        res.sendStatus(204);
+    });
 });
 
 module.exports = router;

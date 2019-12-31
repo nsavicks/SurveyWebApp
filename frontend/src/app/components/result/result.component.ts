@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SurveyTestService } from 'src/app/services/api/survey-test.service';
 import { WorkService } from 'src/app/services/api/work.service';
 import { AnswerService } from 'src/app/services/api/answer.service';
@@ -9,6 +9,8 @@ import { Work } from 'src/app/models/work.model';
 import decode from 'jwt-decode';
 import { Answer } from 'src/app/models/answer.model';
 import { Question } from 'src/app/models/question.model';
+import { UsersService } from 'src/app/services/api/users.service';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-result',
@@ -18,6 +20,7 @@ import { Question } from 'src/app/models/question.model';
 export class ResultComponent implements OnInit {
 
   id: string;
+  username: string;
   current: SurveyTest;
   currentUser: User;
   work: Work;
@@ -32,12 +35,19 @@ export class ResultComponent implements OnInit {
     private route: ActivatedRoute, 
     private surveyTestService: SurveyTestService,
     private workService: WorkService,
-    private answerService: AnswerService,
+    private userService: UsersService,
+    private appComponent: AppComponent,
+    private router: Router
   ) { }
 
   ngOnInit() {
 
-    this.id = this.route.snapshot.paramMap.get('id');
+    this.username = this.route.snapshot.paramMap.get('username');
+    this.id = this.route.snapshot.paramMap.get('surveyId');
+
+    console.log(this.id);
+    console.log(this.username);
+
     this.solutions = [];
     this.answers = [];
 
@@ -55,18 +65,31 @@ export class ResultComponent implements OnInit {
       survey => {
 
         this.current = survey[0];
-        
-        this.workService.getQA(this.currentUser.username, this.current.id).subscribe(
-          res => {
-            this.qa = res;
+
+        if (this.currentUser.username != this.username && this.currentUser.username != this.current.author){
+          this.router.navigate['home'];
+        }
+
+        this.appComponent.changeHeader(this.current.title, "poll-h");
+
+        this.userService.getUserWithUsername(this.username).subscribe(
+          user => {
             
-            this.qa.forEach(q => {
-              this.solutions.push(JSON.parse(q.solutions));
-              this.answers.push(JSON.parse(q.answers))
-            });
+            this.workService.getQA(user.username, this.current.id).subscribe(
+              res => {
+                this.qa = res;
+                
+                this.qa.forEach(q => {
+                  this.solutions.push(JSON.parse(q.solutions));
+                  this.answers.push(JSON.parse(q.answers))
+                });
+    
+              }
+            )
 
           }
-        )
+        );
+        
       }
     );
 

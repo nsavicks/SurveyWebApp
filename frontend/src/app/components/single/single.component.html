@@ -1,7 +1,5 @@
 <div id="single-container">
 
-    <h1>{{current.title}}</h1>
-
     <div class="survey-desc-item">
         <h6><i class="fa fa-hashtag"></i> ID</h6>
         {{current.id}}
@@ -37,7 +35,7 @@
         {{current.author}}
     </div>
 
-    <div class="survey-desc-item">
+    <div class="survey-desc-item" *ngIf="current.type == 0">
         <h6><i class="fa fa-mask"></i> Anonymous</h6>
         {{current.anonymous == 0 ? 'No': 'Yes'}}
     </div>
@@ -48,9 +46,10 @@
     </div>
     
     <div class="survey-desc-buttons">
-        <button type="button" class="btn btn-danger" *ngIf="(!work || work.finished == 0) && current.author != currentUser.username" [routerLink]="['/work', current.id]"><i class="fa fa-edit"></i> Fill</button>
-        <button type="button" class="btn btn-success" *ngIf="work && work.finished == 1 && current.author != currentUser.username" [routerLink]="['/result', current.id]"><i class="fa fa-eye"></i> Show result</button>
-        <button type="button" class="btn btn-danger" *ngIf="current.author == currentUser.username" [routerLink]="['/report', current.id]"><i class="fa fa-poll"></i> Show report</button>
+        <button type="button" class="btn btn-danger" *ngIf="(!work || work.finished == 0) && current.author != currentUser.username && !expired && started" [routerLink]="['/work', current.id]"><i class="fa fa-edit"></i> Fill</button>
+        <button type="button" class="btn btn-success" *ngIf="work && work.finished == 1 && current.author != currentUser.username" [routerLink]="['/result', currentUser.username,  current.id]"><i class="fa fa-eye"></i> Show result</button>
+        <button type="button" class="btn btn-primary" *ngIf="current.author == currentUser.username" [routerLink]="['/report', current.id]"><i class="fa fa-poll"></i> Show report</button>
+        <button type="button" class="btn btn-danger" *ngIf="current.author == currentUser.username" (click) = "Delete()"><i class="fa fa-trash"></i> Delete</button>
     </div>
     
 

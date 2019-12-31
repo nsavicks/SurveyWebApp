@@ -10,4 +10,20 @@
 
 .progress{
     margin-bottom: 25px;
+    height: 30px;
+}
+
+#pages {
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+#pages ul {
+    margin-left: auto;
+    margin-bottom: 0;
+}
+
+#pages p{
+    margin-bottom: 0;
 }

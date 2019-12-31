@@ -12,10 +12,7 @@ import { User } from '../../models/user.model';
 })
 export class RegisterComponent implements OnInit {
 
-  successMessage: string = "You have succesfully registered. You can now login.";
-  showSuccess: boolean = false;
-  errorMessage: string = "";
-  showError: boolean = false;
+  errorMessage: string[] = [];
   user: User;
   repPassword: string;
 
@@ -23,22 +20,17 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.user = new User();
-    this.errorMessage = "";
-    this.showSuccess = false;
-    this.showError = false;
+    this.errorMessage = [];
   }
 
   submitRegistration(){
 
     console.log(this.user);
 
-    this.errorMessage = "";
-    this.showError = false;
-    this.showSuccess = false;
+    this.errorMessage = [];
 
     if (this.repPassword != this.user.password){
-      this.errorMessage += "*Repeated password doesn't match.\n";
-      this.showError = true;
+      this.errorMessage.push("*Repeated password doesn't match.");
     }
 
     // var regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
@@ -51,35 +43,42 @@ export class RegisterComponent implements OnInit {
     var jmbgRegex = new RegExp("[0-9]{13}");
 
     if (!jmbgRegex.test(this.user.jmbg)){
-      this.errorMessage += "*JMBG doesn't match required form";
-      this.showError = true;
+      this.errorMessage.push("*JMBG doesn't match required form");
     }
 
     this.userService.getCountUsersWithEmail(this.user.email).subscribe(
       data => {
 
         if (data.count >= 2){
-          this.errorMessage += "*E-mail address is already associated with two accounts.";
-          this.showError = true;
+          this.errorMessage.push("*E-mail address is already associated with two accounts.");
         }
 
         this.userService.getUserWithUsername(this.user.username).subscribe(
           data => {
-            
+
             if (data != null){
-              this.errorMessage += "*User with given username already exists.";
-              this.showError = true;
+              this.errorMessage.push("*User with given username already exists.");
             }
 
-            if (this.showError){
-              return;
-            }
+            this.userService.getUserWithJMBG(this.user.jmbg).subscribe(
+              data => {
+                
+                if (data != null){
+                  this.errorMessage.push("*User with given JMBG already exists.");
+                }
 
-            this.userService.addUser(this.user).subscribe(
-              user => {
-                this.showSuccess = true;
+                if (this.errorMessage.length != 0){
+                  return;
+                }
+    
+                this.userService.addUser(this.user).subscribe(
+                  user => {
+                    this.router.navigate(['login']);
+                  }
+                );
+
               }
-            );
+            )
 
           }
         );

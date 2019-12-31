@@ -6,6 +6,7 @@ export class Answer {
     answers: string[];
     won_points: number;
 
+
     constructor(len: number, qid, username, sid){
         this.answers = [];
         for (var i = 0; i < len; i++){

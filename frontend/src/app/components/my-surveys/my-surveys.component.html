@@ -1,7 +1,7 @@
-<div id="home-container">
+<div id="my-surveys-container">
 
-    <div id="home-filter">
-        <h3>All surveys</h3>
+    <div id="my-surveys-filter">
+        <h3>My surveys</h3>
         <form>
             <div class="input-group">
                 <select class="form-control" name="filter-surveys" [(ngModel)]="filterSurvey" (change)="HandleFilterSurvey()">
@@ -32,15 +32,15 @@
                 <th scope="row">{{survey.id}}</th>
                 <td>{{survey.title}}</td>
                 <td>{{survey.anonymous}}</td>
-                <td>{{survey.start | date:'dd-MM-yyyy HH:mm'}}</td>
-                <td>{{survey.end | date:'dd-MM-yyyy HH:mm'}}</td>
+                <td>{{survey.start | date:'dd-MM-yyyy'}}</td>
+                <td>{{survey.end | date:'dd-MM-yyyy'}}</td>
                 <td>{{survey.author}}</td>
             </tr>
         </tbody>
     </table>
 
-    <div id="home-filter">
-        <h3>All tests</h3>
+    <div id="my-surveys-filter">
+        <h3>My tests</h3>
         <form>
             <div class="input-group">
                 <select class="form-control" name="filter-tests" [(ngModel)]="filterTest" (change)="HandleFilterTest()">
@@ -62,7 +62,7 @@
             <th scope="col">Title</th>
             <th scope="col">Start date</th>
             <th scope="col">End date</th>
-            <th scope="col">Duration</th>
+            <th scope="col">Duration(s)</th>
             <th scope="col">Author</th>
           </tr>
         </thead>
@@ -70,9 +70,9 @@
             <tr *ngFor="let survey of allTests" [routerLink]="['/single', survey.id]">
                 <th scope="row">{{survey.id}}</th>
                 <td>{{survey.title}}</td>
-                <td>{{survey.start | date:'dd-MM-yyyy HH:mm'}}</td>
-                <td>{{survey.end | date:'dd-MM-yyyy HH:mm'}}</td>
-                <td>{{survey.duration}}s</td>
+                <td>{{survey.start | date:'dd-MM-yyyy'}}</td>
+                <td>{{survey.end | date:'dd-MM-yyyy'}}</td>
+                <td>{{survey.duration}}</td>
                 <td>{{survey.author}}</td>
             </tr>
         </tbody>

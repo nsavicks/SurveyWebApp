@@ -26,6 +26,8 @@ import { SingleComponent } from './components/single/single.component';
 import { WorkComponent } from './components/work/work.component';
 import { ResultComponent } from './components/result/result.component';
 import { ReportComponent } from './components/report/report.component';
+import { MySurveysComponent } from './components/my-surveys/my-surveys.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 export function getToken(){
   return localStorage.getItem('token');
@@ -43,6 +45,8 @@ export function getToken(){
     WorkComponent,
     ResultComponent,
     ReportComponent,
+    MySurveysComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,7 +64,7 @@ export function getToken(){
     JwtModule.forRoot({config: {
       tokenGetter: getToken
     }}),
-    RouterModule
+    RouterModule,
   ],
   providers: [JwtHelperService, AdministratorGuardService],
   bootstrap: [AppComponent]

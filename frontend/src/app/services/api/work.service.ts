@@ -18,6 +18,10 @@ export class WorkService {
     return this.http.get<Work>('http://localhost:5000/api/work/getWork/' + username + '&' + id);
   }
 
+  getFinishedWorks(id): Observable<Object[]> {
+    return this.http.get<Object[]>('http://localhost:5000/api/work/getFinishedWorks/' + id);
+  }
+
   getQA(username, id): Observable<Object[]> {
     return this.http.get<Object[]>('http://localhost:5000/api/work/getQA/' + username + '&' + id);
   }

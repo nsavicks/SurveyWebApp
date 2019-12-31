@@ -22,6 +22,23 @@ router.get('/getAnswer/:qid&:username&:surveyId', (req,res) => {
 
 });
 
+// Get all answers for question
+router.get('/getQuestionAnswers/:qid&:surveyId', (req,res) => {
+
+    db.query("select * from answer where question_id = :qid AND survey_test_id = :sid", 
+    {
+        replacements: {
+            qid: req.params['qid'],
+            sid: req.params['surveyId']
+        }
+    })
+    .then(([result, metadata]) => {
+        //console.log(result);
+        res.send(result);
+    });
+
+});
+
 // Delete all answers for survey and user
 router.delete('/deleteAnswers/:sid&:username',(req, res) => {
     

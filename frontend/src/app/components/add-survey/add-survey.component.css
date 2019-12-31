@@ -26,6 +26,10 @@ form {
     justify-content: space-between;
 }
 
+.question-header i{
+    margin-left: 10px;
+}
+
 .field-header{
     display: flex;
     justify-content: space-between;
@@ -37,4 +41,12 @@ form {
 
 button {
     margin-right: 10px;
+}
+
+#load-json{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-left: 10px solid #607D8B;
 }

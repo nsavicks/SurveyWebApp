@@ -69,11 +69,8 @@
             <div class="help-block with-errors"></div>
         </div> 
 
-        <div *ngIf="showError" class="alert alert-danger" role="alert">
-            {{errorMessage}}
-        </div>
-        <div *ngIf="showSuccess" class="alert alert-success" role="alert">
-            {{successMessage}}
+        <div *ngFor="let mess of errorMessage" class="alert alert-danger" role="alert">
+            {{mess}}
         </div>
 
         <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-user-plus"></i> Register</button>

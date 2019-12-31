@@ -11,6 +11,8 @@ export class AppComponent {
   title = 'SurveyApp';
   currentActive = "home";
   loggedInType = -1;
+  icon: string;
+  header: string;
 
   constructor(private router: Router){
     
@@ -51,6 +53,11 @@ export class AppComponent {
 
   changeLoggedInType(type: number){
     this.loggedInType = type;
+  }
+
+  changeHeader(header, icon){
+    this.header = header;
+    this.icon = icon;
   }
 
 }

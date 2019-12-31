@@ -12,6 +12,8 @@ import { SingleComponent } from './components/single/single.component';
 import { WorkComponent } from './components/work/work.component';
 import { ResultComponent } from './components/result/result.component';
 import { ReportComponent } from './components/report/report.component';
+import { MySurveysComponent } from './components/my-surveys/my-surveys.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 
 const routes: Routes = [
@@ -23,8 +25,10 @@ const routes: Routes = [
   {path: 'add-survey-test', component: AddSurveyComponent, canActivate: [AuthorGuardService]},
   {path: 'single/:id', component: SingleComponent},
   {path: 'work/:id', component: WorkComponent},
-  {path: 'result/:id', component: ResultComponent},
-  {path: 'report/:id', component: ReportComponent}
+  {path: 'result/:username/:surveyId', component: ResultComponent},
+  {path: 'report/:id', component: ReportComponent},
+  {path: 'my-surveys-tests', component: MySurveysComponent},
+  {path: 'change-password', component: ChangePasswordComponent}
 ];
 
 @NgModule({

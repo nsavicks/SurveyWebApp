@@ -18,19 +18,23 @@ import { Variable } from '@angular/compiler/src/render3/r3_ast';
 export class WorkComponent implements OnInit {
 
   id: string;
+  allQuestions: Question[];
   questions: Question[];
   current: SurveyTest;
   currentUser: User;
   answers: Answer[];
-  answered: boolean[];
-  countAll: number;
-  countAnswered: number;
   percent: number;
   elapsed: number;
   timer;
   totalPoints: number;
   maxPoints: number;
   points: number[];
+  
+  // Pagination
+  currentPage: number;
+  maxPage: number;
+  noQuestPerPage: number[];
+  offset: number;
   
   constructor(private surveyTestService: SurveyTestService, 
     private route: ActivatedRoute, 
@@ -39,10 +43,9 @@ export class WorkComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-
+    
     this.id = this.route.snapshot.paramMap.get('id');
     this.percent = 0;
-    this.countAnswered = 0;
 
     var token = localStorage.getItem('token');
     var tokenPayload = decode(token);
@@ -52,6 +55,17 @@ export class WorkComponent implements OnInit {
       survey => {
         this.current = survey[0];
 
+        // Pagination calcs 
+
+        this.currentPage = 1;
+
+        if (this.current.pages){
+          this.maxPage = this.current.pages;
+        }
+        else{
+          this.maxPage = 1;
+        }
+
         if (this.current.type == 1){
           this.elapsed = 0;
           
@@ -59,8 +73,12 @@ export class WorkComponent implements OnInit {
             () => {
               this.elapsed++;
 
+              if (this.current.duration > 15 && this.current.duration - this.elapsed == 15){
+                // TODO change color to red
+              }
+
               if (this.elapsed == this.current.duration){
-                clearInterval(this.timer);
+                this.Submit();
               }
 
             },
@@ -74,22 +92,96 @@ export class WorkComponent implements OnInit {
 
     this.surveyTestService.getQuestions(this.id).subscribe(
       q => {
-        this.questions = q;
+
+        this.allQuestions = q;
+
+        this.CalculatePagination();
+
+        this.questions = this.allQuestions.slice(this.offset, this.offset + this.noQuestPerPage[this.currentPage - 1]);
+
         this.answers = [];
-        this.answered = [];
-        this.countAll = q.length;
 
-        this.questions.forEach(q => {
+        if (this.current.type == 0){
+          // try to load saved version
 
-          this.answered.push(false);
-          console.log(q.solutions);
-          let obj = JSON.parse(q.solutions);
-          q.labels = obj.labels;
-          q.correct = obj.correct;
-          
-          this.answers.push(new Answer(q.labels.length, q.id, this.currentUser.username, this.current.id));
-          
-        });
+          this.workService.getWork(this.currentUser.username, this.current.id).subscribe(
+            prevWork => {
+              
+              //console.log(prevWork);
+
+              if (prevWork[0] != null){
+                
+                //console.log(prevWork[0]);
+
+                this.allQuestions.forEach(
+                  q => {
+
+                    let obj = JSON.parse(q.solutions);
+                    q.labels = obj.labels;
+                    q.correct = obj.correct;
+
+                    this.answerService.getAnswer(q.id, this.currentUser.username, this.current.id).subscribe(
+                      a => {
+                        //console.log(a);
+                        if (a.length > 0){
+                          
+                          a[0].answers = JSON.parse(a[0].answers);
+
+                          let tmpAnswer = new Answer(q.labels.length, q.id, this.currentUser.username, this.current.id);
+                          tmpAnswer.answers = a[0].answers;
+                        
+                          this.answers.push(tmpAnswer);
+                          this.RefreshProgressBar();
+
+                        }
+                        else{
+
+                          this.answers.push(new Answer(q.labels.length, q.id, this.currentUser.username, this.current.id));
+
+                        }
+
+                      }
+                    );
+
+                  }
+                );
+              
+              }
+              else{
+                // if there is no previouse state
+
+                this.allQuestions.forEach(q => {
+
+                  let obj = JSON.parse(q.solutions);
+                  q.labels = obj.labels;
+                  q.correct = obj.correct;
+                  
+                  this.answers.push(new Answer(q.labels.length, q.id, this.currentUser.username, this.current.id));
+                  
+                });
+
+              }
+
+            }
+          );
+
+        }
+        else{
+
+          // For test there is no loading previous state
+
+          this.allQuestions.forEach(q => {
+
+            console.log(q.solutions);
+            let obj = JSON.parse(q.solutions);
+            q.labels = obj.labels;
+            q.correct = obj.correct;
+            
+            this.answers.push(new Answer(q.labels.length, q.id, this.currentUser.username, this.current.id));
+            
+          });
+
+        }
 
       }
     );
@@ -98,33 +190,36 @@ export class WorkComponent implements OnInit {
   }
 
   handleChange(i){
-    if (!this.answered[i]){
-      this.answered[i] = true;
-      this.countAnswered++;
-      this.percent = this.countAnswered / this.countAll * 100;
-      document.getElementById("progress-bar").style.width = this.percent + "%";
-    }
+    
+    this.RefreshProgressBar();
+
   }
 
   handleCheck(i, j){
 
-    console.log(i,j);
-
-    if (this.answers[i].answers[j] == ''){
-      this.answers[i].answers[j] = '1';
+    if (this.answers[i].answers[j] == ""){
+      this.answers[i].answers[j] = "1";
     }
     else{
-      this.answers[i].answers[j] = '';
+      this.answers[i].answers[j] = "";
     }
 
-    if (!this.answered[i]){
-      this.answered[i] = true;
-      this.countAnswered++;
-      this.percent = this.countAnswered / this.countAll * 100;
-      document.getElementById("progress-bar").style.width = this.percent + "%";
+    this.RefreshProgressBar();
+
+  }
+
+  handleRadioCheck(i, j){
+
+    for(var k = 0; k < this.answers[i].answers.length; k++){
+      this.answers[i].answers[k] = "";
     }
 
-    console.log(this.answers[i].answers[j]);
+    this.answers[i].answers[j] = "1";
+
+    console.log(this.answers[i].answers);
+
+    this.RefreshProgressBar();
+
   }
 
   Submit(){
@@ -171,7 +266,7 @@ export class WorkComponent implements OnInit {
 
                 }
 
-                this.router.navigate(['single/' + this.current.id])
+                this.router.navigate(['single/' + '/' + this.current.id])
       
               }
             );
@@ -190,24 +285,93 @@ export class WorkComponent implements OnInit {
     this.points = [];
 
 
-    for (var i = 0; i < this.questions.length; i++){
+    for (var i = 0; i < this.allQuestions.length; i++){
 
       var noCorrect = 0;
 
-      var total = this.questions[i].correct.length;
+      var total = this.allQuestions[i].correct.length;
 
       for (var j = 0; j < total; j++){
 
-        if (this.questions[i].correct[j] == this.answers[i].answers[j]){
+        if (this.allQuestions[i].correct[j] == this.answers[i].answers[j]){
           noCorrect++;
         }
 
       }
 
-      this.points[i] = (noCorrect / total) * this.questions[i].points;
+      this.points[i] = (noCorrect / total) * this.allQuestions[i].points;
       this.totalPoints += this.points[i];
-      this.maxPoints += this.questions[i].points;
+      this.maxPoints += this.allQuestions[i].points;
     }
+
+  }
+
+  RefreshProgressBar(){
+
+    var cntResponded = 0;
+    var cntQuestions = this.allQuestions.length;
+
+    for (var i = 0; i < cntQuestions; i++){
+
+      var foundAnswered = false;
+      if (this.answers[i]){
+
+        for (var j = 0; j < this.answers[i].answers.length; j++){
+          if (this.answers[i].answers[j] && this.answers[i].answers[j] != ""){
+            foundAnswered = true;
+            break;
+          }
+        }
+
+      }
+      
+      if (foundAnswered) cntResponded++;
+
+    }
+
+    this.percent = Math.trunc(cntResponded / cntQuestions * 100);
+    document.getElementById("progress-bar").style.width = this.percent + "%";
+
+  }
+
+  CalculatePagination(){
+
+    this.noQuestPerPage = [];
+    var numberOfQuestions = this.allQuestions.length;
+    var leftQuestions = numberOfQuestions;
+    var leftPages = this.maxPage;
+    var maxPerPage = Math.ceil(numberOfQuestions / this.maxPage);
+
+    while (leftQuestions > 0){
+      if (leftQuestions - (leftPages - 1) >= maxPerPage){
+        this.noQuestPerPage.push(maxPerPage);
+        leftQuestions -= maxPerPage;
+        leftPages--;
+      }
+      else{
+        this.noQuestPerPage.push(leftQuestions - (leftPages - 1));
+        leftQuestions = leftPages - 1;
+        leftPages--;
+      }
+    }
+
+    this.offset = 0;
+
+  }
+
+  PrevPage(){
+
+    this.currentPage--;
+    this.offset -= this.noQuestPerPage[this.currentPage - 1];
+    this.questions = this.allQuestions.slice(this.offset, this.offset + this.noQuestPerPage[this.currentPage - 1]);
+
+  }
+
+  NextPage(){
+
+    this.offset += this.noQuestPerPage[this.currentPage - 1];
+    this.currentPage++;
+    this.questions = this.allQuestions.slice(this.offset, this.offset + this.noQuestPerPage[this.currentPage - 1]);
 
   }
   

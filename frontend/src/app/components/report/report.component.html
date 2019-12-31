@@ -1,1 +1,99 @@
-<p>report works!</p>
+<div id="report-container">
+
+    <div id="survey-report" [hidden]="!isSurvey">
+      
+      <hr/>
+      <h2>Question statistics</h2>
+      <hr/>
+
+      <div class="accordion" id="accordionExample">
+        <div class="card" *ngFor="let q of questions; let i = index">
+          <div class="card-header" id="heading{{i}}">
+            <h2 class="mb-0">
+              <button class="btn btn-link" type="button" data-toggle="collapse" [attr.data-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i">
+                {{i+1}}. {{q.text}}
+              </button>
+            </h2>
+          </div>
+      
+          <div id="collapse{{i}}" class="collapse" [attr.aria-labelledby]="'heading' + i" data-parent="#accordionExample">
+            <div class="card-body">
+              
+              <div *ngFor="let label of q.labels; let j = index">
+                <hr/>
+                <h5>{{j + 1}}. {{label}}</h5>
+                <hr/>
+                <canvas id="chart{{i}}-{{j}}" height="100" responsive="true"></canvas> 
+              </div>
+
+            </div>
+          </div>
+        </div>
+        
+    </div>
+
+    <hr/>
+
+    <h2>Work history</h2>
+        
+    <hr/>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let w of works" [routerLink]="['/result', w.user_username, w.survey_test_id]">
+            <td *ngIf="current.anonymous == 0">{{w.username}}</td>
+            <td *ngIf="current.anonymous == 1">Hidden</td>
+            <td *ngIf="current.anonymous == 0">{{w.first_name}}</td>
+            <td *ngIf="current.anonymous == 1">Hidden</td>
+            <td *ngIf="current.anonymous == 0">{{w.last_name}}</td>
+            <td *ngIf="current.anonymous == 1">Hidden</td>
+          </tr>
+        </tbody>
+    </table>
+
+    </div>
+
+    <div id="test-report" [hidden]="isSurvey" >
+
+        <hr/>
+
+        <h2>Test statistics</h2>
+
+        <hr/>
+
+        <canvas id="myChart" height="100" responsive="true"></canvas> 
+
+        <hr/>
+        <h2>Work history</h2>
+
+        <hr/>
+  
+        <table class="table table-striped">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">First name</th>
+                <th scope="col">Last name</th>
+                <th scope="col">Elapsed time</th>
+                <th scope="col">Total points</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let w of works" [routerLink]="['/result', w.user_username, w.survey_test_id]">
+                <td>{{w.first_name}}</td>
+                <td>{{w.last_name}}</td>
+                <td>{{w.time}}s</td>
+                <td>{{w.total_points}} / {{maxPoints}}</td>
+              </tr>
+            </tbody>
+        </table>
+          
+    </div> 
+
+</div>

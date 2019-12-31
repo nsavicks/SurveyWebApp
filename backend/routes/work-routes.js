@@ -14,6 +14,28 @@ router.get('/getWork/:username&:surveyId', (req,res) => {
 
 });
 
+// Get all finished works for survey/test
+router.get('/getFinishedWorks/:surveyId', (req,res) => {
+
+    db.query(`SELECT *
+    from users u, work w
+    where w.user_username = u.username
+    and w.survey_test_id = :id
+    and w.finished = 1`, 
+    {
+        replacements: 
+        {
+            id: req.params['surveyId']
+        }
+    }
+    )
+    .then(([result, metadata]) => {
+        //console.log(result);
+        res.send(result);
+    });
+
+});
+
 // Get Questions and Answers for work
 router.get('/getQA/:username&:surveyId', (req,res) => {
 

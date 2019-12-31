@@ -24,9 +24,9 @@ app.listen(5000, () => {
     console.log("Server started...");
 });
 
-app.route('/').get((req, res) => {
-    res.send('HELLO');
-})
+app.get('/', (req, res) =>  {
+  res.send("HELOO");
+});
 
 // User
 app.use('/api/users', require('./routes/user-routes'));

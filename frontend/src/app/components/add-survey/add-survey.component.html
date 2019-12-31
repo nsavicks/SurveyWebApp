@@ -1,6 +1,22 @@
 <div id="add-container">
 
+    <form name="load-form">
+
+        <div id="load-json">
+
+            <div class="form-group">
+                <label for="json">Load from JSON</label>
+                <input type="file" class="form-control-file" name="json" accept=".json" (change)="HandleFileChange($event.target.files)">
+            </div>
+    
+            <button type="button" (click)="LoadFromJSON()" class="btn btn-primary"><i class="fa fa-check"></i> Load</button>
+
+        </div>
+        
+    </form>
+
     <form name="add-form">
+
         <h2>Survey/Test info</h2>
         <hr/>
 
@@ -43,7 +59,7 @@
         </div>
 
         <div class="form-group" *ngIf="current.type == 0">
-            <input class="form-check-input" type="checkbox" name="anon" [(ngModel)]="anonChecked">
+            <input class="form-check-input" type="checkbox" name="anon" [(ngModel)]="anonChecked" [checked]="true">
             <label class="form-check-label" for="anon">
                 Anonymous
             </label>
@@ -106,7 +122,12 @@
                         <h2>Question #{{i+1}}</h2>
                         <h6><i>{{type == 'Survey' ? surveyTypes[q.type - 1] : testTypes[q.type - 1]}}</i></h6>
                     </div>
-                    <i class="fa fa-trash" (click)="RemoveQuestion(i)"></i>
+                    <div>
+                        <i class="fa fa-arrow-up" (click)="MoveUp(i)"></i>
+                        <i class="fa fa-arrow-down" (click)="MoveDown(i)"></i>
+                        <i class="fa fa-trash" (click)="RemoveQuestion(i)"></i>
+                    </div>
+                    
                 </div>
                 
                 <hr/>
