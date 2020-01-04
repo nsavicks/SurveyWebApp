@@ -8,7 +8,7 @@ import { User } from 'src/app/models/user.model';
 import decode from 'jwt-decode' 
 import { WorkService } from 'src/app/services/api/work.service';
 import { AnswerService } from 'src/app/services/api/answer.service';
-import { Variable } from '@angular/compiler/src/render3/r3_ast';
+import { ToastrService } from 'ngx-toastr'
 
 @Component({
   selector: 'app-work',
@@ -40,10 +40,11 @@ export class WorkComponent implements OnInit {
     private route: ActivatedRoute, 
     private workService: WorkService,
     private answerService: AnswerService,
-    private router: Router) { }
+    private router: Router,
+    private toastr: ToastrService) { }
 
   ngOnInit() {
-    
+
     this.id = this.route.snapshot.paramMap.get('id');
     this.percent = 0;
 
@@ -55,6 +56,7 @@ export class WorkComponent implements OnInit {
       survey => {
         this.current = survey[0];
 
+        console.log(this.current.shuffle);
         // Pagination calcs 
 
         this.currentPage = 1;
@@ -95,6 +97,10 @@ export class WorkComponent implements OnInit {
 
         this.allQuestions = q;
 
+        if (this.current.shuffle == 1){
+          this.ShuffleQuestions();
+        }
+
         this.CalculatePagination();
 
         this.questions = this.allQuestions.slice(this.offset, this.offset + this.noQuestPerPage[this.currentPage - 1]);
@@ -130,13 +136,13 @@ export class WorkComponent implements OnInit {
                           let tmpAnswer = new Answer(q.labels.length, q.id, this.currentUser.username, this.current.id);
                           tmpAnswer.answers = a[0].answers;
                         
-                          this.answers.push(tmpAnswer);
+                          this.answers[q.order_number] = tmpAnswer;
                           this.RefreshProgressBar();
 
                         }
                         else{
 
-                          this.answers.push(new Answer(q.labels.length, q.id, this.currentUser.username, this.current.id));
+                          this.answers[q.order_number] = new Answer(q.labels.length, q.id, this.currentUser.username, this.current.id);
 
                         }
 
@@ -156,7 +162,7 @@ export class WorkComponent implements OnInit {
                   q.labels = obj.labels;
                   q.correct = obj.correct;
                   
-                  this.answers.push(new Answer(q.labels.length, q.id, this.currentUser.username, this.current.id));
+                  this.answers[q.order_number] = new Answer(q.labels.length, q.id, this.currentUser.username, this.current.id);
                   
                 });
 
@@ -177,7 +183,7 @@ export class WorkComponent implements OnInit {
             q.labels = obj.labels;
             q.correct = obj.correct;
             
-            this.answers.push(new Answer(q.labels.length, q.id, this.currentUser.username, this.current.id));
+            this.answers[q.order_number] = new Answer(q.labels.length, q.id, this.currentUser.username, this.current.id);
             
           });
 
@@ -189,7 +195,7 @@ export class WorkComponent implements OnInit {
 
   }
 
-  handleChange(i){
+  handleChange(){
     
     this.RefreshProgressBar();
 
@@ -265,7 +271,8 @@ export class WorkComponent implements OnInit {
                   );
 
                 }
-
+                
+                this.toastr.success("Submited successfully.");
                 this.router.navigate(['single/' + '/' + this.current.id])
       
               }
@@ -289,19 +296,21 @@ export class WorkComponent implements OnInit {
 
       var noCorrect = 0;
 
-      var total = this.allQuestions[i].correct.length;
+      var q = this.allQuestions[i];
+
+      var total = q.correct.length;
 
       for (var j = 0; j < total; j++){
 
-        if (this.allQuestions[i].correct[j] == this.answers[i].answers[j]){
+        if (q.correct[j] == this.answers[q.order_number].answers[j]){
           noCorrect++;
         }
 
       }
 
-      this.points[i] = (noCorrect / total) * this.allQuestions[i].points;
-      this.totalPoints += this.points[i];
-      this.maxPoints += this.allQuestions[i].points;
+      this.points[q.order_number] = (noCorrect / total) * q.points;
+      this.totalPoints += this.points[q.order_number];
+      this.maxPoints += q.points;
     }
 
   }
@@ -372,6 +381,17 @@ export class WorkComponent implements OnInit {
     this.offset += this.noQuestPerPage[this.currentPage - 1];
     this.currentPage++;
     this.questions = this.allQuestions.slice(this.offset, this.offset + this.noQuestPerPage[this.currentPage - 1]);
+
+  }
+
+  ShuffleQuestions(){
+
+    for (var i = this.allQuestions.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = this.allQuestions[i];
+      this.allQuestions[i] = this.allQuestions[j];
+      this.allQuestions[j] = temp;
+    }
 
   }
   

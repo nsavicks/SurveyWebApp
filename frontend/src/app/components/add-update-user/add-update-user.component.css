@@ -1,0 +1,20 @@
+
+#register-content{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+#register-content form{
+    width: 20%;
+    min-width: 200px;
+}
+
+.error-message{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+

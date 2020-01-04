@@ -16,24 +16,24 @@
                     <div *ngSwitchCase="1">
                         <div class="form-group" *ngFor="let label of q.labels; let j = index">
                             <label for="number_input_{{offset + i}}_{{j}}">{{label}}</label>
-                            <input type="number" class="form-control" name="number_input_{{offset + i}}_{{j}}" *ngIf="answers && answers[offset + i]" [(ngModel)]="answers[offset + i].answers[j]" (change)="handleChange(offset + i)">
+                            <input type="number" class="form-control" name="number_input_{{offset + i}}_{{j}}" *ngIf="answers && answers[offset + q.order_number]" [(ngModel)]="answers[offset + q.order_number].answers[j]" (change)="handleChange()">
                         </div>
                     </div>
                     <div *ngSwitchCase="2">
                         <div class="form-group" *ngFor="let label of q.labels; let j = index">
                             <label for="text_input_{{offset + i}}_{{j}}">{{label}}</label>
-                            <input type="text" class="form-control" name="text_input_{{offset + i}}_{{j}}" *ngIf="answers && answers[offset + i]" [(ngModel)]="answers[offset + i].answers[j]"  (change)="handleChange(offset + i)">
+                            <input type="text" class="form-control" name="text_input_{{offset + i}}_{{j}}" *ngIf="answers && answers[offset + q.order_number]" [(ngModel)]="answers[offset + q.order_number].answers[j]"  (change)="handleChange()">
                         </div>
                     </div>
                     <div *ngSwitchCase="3">
                         <div class="form-group" *ngFor="let label of q.labels; let j = index">
                             <label for="textarea_input_{{offset + i}}_{{j}}">{{label}}</label>
-                            <textarea class="form-control" name="textarea_input_{{offset + i}}_{{j}}" rows="5" *ngIf="answers && answers[offset + i]" [(ngModel)]="answers[offset + i].answers[j]" (change)="handleChange(offset + i)"></textarea>
+                            <textarea class="form-control" name="textarea_input_{{offset + i}}_{{j}}" rows="5" *ngIf="answers && answers[offset + q.order_number]" [(ngModel)]="answers[offset + q.order_number].answers[j]" (change)="handleChange()"></textarea>
                         </div>
                     </div>
                     <div *ngSwitchCase="4">
                         <div class="form-check" *ngFor="let label of q.labels; let j = index">
-                            <input class="form-check-input" type="radio" name="radio_input_{{offset + i}}" id="radio_input_{{offset + i}}_{{j}}" *ngIf="answers && answers[offset + i]" [checked]="answers[offset + i].answers[j] == '1'" (change)="handleRadioCheck(offset + i,j)">
+                            <input class="form-check-input" type="radio" name="radio_input_{{offset + i}}" id="radio_input_{{offset + i}}_{{j}}" *ngIf="answers && answers[offset + q.order_number]" [checked]="answers[offset + q.order_number].answers[j] == '1'" (change)="handleRadioCheck(offset + q.order_number,j)">
                             <label class="form-check-label" for="radio_input_{{offset + i}}_{{j}}">
                               {{label}}
                             </label>
@@ -41,7 +41,7 @@
                     </div>
                     <div *ngSwitchCase="5">
                         <div class="form-check" *ngFor="let label of q.labels; let j = index">
-                            <input class="form-check-input" type="checkbox" value="{{j}}" name="input_check_{{offset + i}}_{{j}}" *ngIf="answers && answers[offset + i]" [checked]="answers[offset + i].answers[j] == '1'" (change)="handleCheck(offset + i,j)">
+                            <input class="form-check-input" type="checkbox" value="{{j}}" name="input_check_{{offset + i}}_{{j}}" *ngIf="answers && answers[offset + q.order_number]" [checked]="answers[offset + q.order_number].answers[j] == '1'" (change)="handleCheck(offset + q.order_number,j)">
                             <label class="form-check-label" for="input_check_{{offset + i}}_{{j}}">
                                 {{label}}
                             </label>

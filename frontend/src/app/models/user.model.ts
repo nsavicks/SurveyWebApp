@@ -9,6 +9,6 @@ export class User {
   telephone: string;
   email: string;
   picture: string;
-  type: number;
+  type: number = 0;
   status: number;
 }

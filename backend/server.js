@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
+const multer = require('multer')
 
 // Database import
 const db = require('./config/database');
@@ -15,6 +16,22 @@ var corsOptions = {
     optionsSuccessStatus: 200 
   }
 
+// Image upload
+var UPLOAD_DIR = './UPLOAD/';
+
+let storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, UPLOAD_DIR);
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname)
+  }
+});
+
+let upload = multer({
+  storage: storage
+});
+
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,6 +44,27 @@ app.listen(5000, () => {
 app.get('/', (req, res) =>  {
   res.send("HELOO");
 });
+
+app.use('/upload/', express.static('UPLOAD'));
+
+// Image upload
+app.post('/api/upload', upload.single('photo'), function (req, res) {
+  console.log(req.file);
+  
+  if (!req.file) {
+    console.log("No file is available!");
+    return res.send({
+      success: false
+    });
+
+  } else {
+    console.log('File is available!');
+    return res.send({
+      success: true
+    })
+  }
+});
+
 
 // User
 app.use('/api/users', require('./routes/user-routes'));

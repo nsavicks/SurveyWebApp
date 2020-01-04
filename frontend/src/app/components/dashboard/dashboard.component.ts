@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../models/user.model'; 
 import { UsersService } from '../../services/api/users.service';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,9 +15,11 @@ export class DashboardComponent implements OnInit {
   allUsername: string;
   pendingUsername: string;
 
-  constructor(private usersService: UsersService) { }
+  constructor(private usersService: UsersService, private appComponent: AppComponent) { }
 
   ngOnInit() {
+
+    this.appComponent.changeHeader("Dashboard", "shield");
 
     this.usersService.getAllUsers().subscribe(
       users => {
@@ -65,10 +68,6 @@ export class DashboardComponent implements OnInit {
 
       }
     )
-
-  }
-
-  Modify(user: User){
 
   }
 

@@ -165,6 +165,37 @@ router.post('/getToken', (req, res) => {
 
 });
 
+// Update user values
+router.post('/updateUser', (req, res) => {
+    var user = req.body;
+    
+    User.update(
+        {
+            username: user.username,
+            password: user.password,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            birthday: user.birthday,
+            birthplace: user.birthplace,
+            JMBG: user.JMBG,
+            telephone: user.telephone,
+            email: user.email,
+            type: user.type,
+            status: user.status
+        },
+        {
+            where: {
+                username: user.username
+            }
+        }
+    ).then(
+        user => {
+            res.json(user);
+        }
+    );
+
+})
+
 // Change user status to active
 router.put('/acceptUser/:username', (req, res) => {
 

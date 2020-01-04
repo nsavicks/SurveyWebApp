@@ -23,6 +23,8 @@
     "chart.js": "^2.9.3",
     "font-awesome": "^4.7.0",
     "jwt-decode": "^2.2.0",
+    "ng2-file-upload": "^1.4.0",
+    "ngx-toastr": "^11.2.1",
     "primeicons": "^2.0.0",
     "primeng": "^9.0.0-rc.2",
     "rxjs": "~6.4.0",

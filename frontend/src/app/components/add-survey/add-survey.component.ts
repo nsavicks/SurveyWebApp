@@ -6,6 +6,7 @@ import { SurveyTest } from 'src/app/models/survey-test.model';
 import decode from 'jwt-decode'
 import { User } from 'src/app/models/user.model';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-survey',
@@ -28,11 +29,13 @@ export class AddSurveyComponent implements OnInit {
   constructor(
     private appComponent: AppComponent,
     private surveyTestService: SurveyTestService,
-    private router: Router) { }
+    private router: Router,
+    private toastr: ToastrService) { }
 
   ngOnInit() {
 
     this.appComponent.ChangeNavigationActive("add-survey-test");
+    this.appComponent.changeHeader("Add Survey / Test", "plus");
 
     this.current = new SurveyTest();
     this.questions = [];

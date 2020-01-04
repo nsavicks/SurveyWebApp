@@ -14,6 +14,7 @@ import { ResultComponent } from './components/result/result.component';
 import { ReportComponent } from './components/report/report.component';
 import { MySurveysComponent } from './components/my-surveys/my-surveys.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { AddUpdateUserComponent } from './components/add-update-user/add-update-user.component';
 
 
 const routes: Routes = [
@@ -28,7 +29,9 @@ const routes: Routes = [
   {path: 'result/:username/:surveyId', component: ResultComponent},
   {path: 'report/:id', component: ReportComponent},
   {path: 'my-surveys-tests', component: MySurveysComponent},
-  {path: 'change-password', component: ChangePasswordComponent}
+  {path: 'change-password', component: ChangePasswordComponent},
+  {path: 'add-update-user', component: AddUpdateUserComponent},
+  {path: 'add-update-user/:username', component: AddUpdateUserComponent}
 ];
 
 @NgModule({

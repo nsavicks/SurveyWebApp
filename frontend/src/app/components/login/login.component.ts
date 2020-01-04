@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
                 token => {
                   console.log(token);
                   localStorage.setItem('token', token.toString());
-                  this.appComponent.changeLoggedInType(user.type);
+                  this.appComponent.changeLoggedInType(user);
                   this.router.navigate(['home']);
                 }
               );

@@ -34,6 +34,10 @@ export class UsersService {
     return this.http.post<User>('http://localhost:5000/api/users', user, httpOptions);
   }
 
+  updateUser(user: User): Observable<User> {
+    return this.http.post<User>('http://localhost:5000/api/users/updateUser', user, httpOptions);
+  }
+
   getCountUsersWithEmail(email: string){
     return this.http.get('http://localhost:5000/api/users/getCountWithEmail/' + 'email',  httpOptions);
   }

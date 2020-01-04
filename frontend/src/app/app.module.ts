@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { ToastrModule, ToastrService } from 'ngx-toastr'
 
 import {InputTextModule} from 'primeng/inputtext';
 import {SliderModule} from 'primeng/slider';
@@ -28,6 +29,10 @@ import { ResultComponent } from './components/result/result.component';
 import { ReportComponent } from './components/report/report.component';
 import { MySurveysComponent } from './components/my-surveys/my-surveys.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { AuthorGuardService } from './services/auth/author-guard/author-guard.service';
+import { UserGuardService } from './services/auth/user-guard/user-guard.service';
+import { FileSelectDirective } from 'ng2-file-upload';
+import { AddUpdateUserComponent } from './components/add-update-user/add-update-user.component';
 
 export function getToken(){
   return localStorage.getItem('token');
@@ -47,6 +52,8 @@ export function getToken(){
     ReportComponent,
     MySurveysComponent,
     ChangePasswordComponent,
+    FileSelectDirective,
+    AddUpdateUserComponent
   ],
   imports: [
     BrowserModule,
@@ -65,8 +72,9 @@ export function getToken(){
       tokenGetter: getToken
     }}),
     RouterModule,
+    ToastrModule.forRoot()
   ],
-  providers: [JwtHelperService, AdministratorGuardService],
+  providers: [JwtHelperService, AdministratorGuardService, AuthorGuardService, UserGuardService, ToastrService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

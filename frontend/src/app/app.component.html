@@ -21,9 +21,18 @@
         <ul class="nav navbar-nav ml-auto">
           <li *ngIf="loggedInType == -1"><a href="#" routerLink="login" class="nav-link"><i class="fa fa-sign-in"></i> Login</a></li>
           <li *ngIf="loggedInType == -1"><a href="#" routerLink="register" class="nav-link"><i class="fa fa-user-plus"></i> Register</a></li>
-          <li *ngIf="loggedInType >= 2"><a href="#" routerLink="dashboard" class="nav-link"><i class="fa fa-shield"></i> Dashboard</a></li>
-          <li *ngIf="loggedInType >= 0"><a href="#" routerLink="change-password" class="nav-link"><i class="fa fa-key"></i> Change password</a></li>
-          <li *ngIf="loggedInType >= 0"><a href="#" (click)="Logout()" class="nav-link"><i class="fa fa-sign-out"></i> Logout</a></li>
+        
+          <li class="nav-item dropdown" *ngIf="loggedInType >= 0">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <img src="http://localhost:5000/upload/{{user.picture}}" width="30px" height="30px" />
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#" *ngIf="loggedInType >= 2" routerLink="add-update-user"><i class="fa fa-user-plus"></i> Add user</a>
+              <a class="dropdown-item" href="#" *ngIf="loggedInType >= 2" routerLink="dashboard"><i class="fa fa-shield"></i> Dashboard</a>
+              <a class="dropdown-item" href="#" routerLink="change-password"><i class="fa fa-key"></i> Change password</a>
+              <a class="dropdown-item" href="#" (click)="Logout()"><i class="fa fa-sign-out"></i> Logout</a>
+            </div>
+          </li>
         </ul>
       </div>
     </nav>

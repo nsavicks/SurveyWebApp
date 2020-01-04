@@ -1,72 +1,71 @@
 <div id="register-content">  
 
-    <form (ngSubmit)="submitRegistration()">
+    <form (ngSubmit)="submitRegistration()" ngNativeValidate>
 
         <div class="form-group">
-            <label for="picture">Profile picture</label>
-            <input type="file" class="form-control-file" name="picture" accept=".jpg, .png, .jpeg">
+            <label for="photo">Profile picture</label>
+            <input type="file" class="form-control-file" name="photo" ng2FileSelect [uploader]="uploader" accept=".jpg, .png, .jpeg" required>
         </div>
 
         <div class="form-group">
             <label for="first-name">First name</label>
-            <input type="text" class="form-control" name="first_name" [(ngModel)]="user.first_name">
+            <input type="text" class="form-control" name="first_name" [(ngModel)]="user.first_name" required>
         </div>
 
         <div class="form-group">
             <label for="last-name">Last name</label>
-            <input type="text" class="form-control" name="last_name" [(ngModel)]="user.last_name">
+            <input type="text" class="form-control" name="last_name" [(ngModel)]="user.last_name" required>
         </div>
 
         <div class="form-group">
           <label for="username">Username</label>
-          <input type="text" class="form-control" name="username" [(ngModel)]="user.username">
+          <input type="text" class="form-control" name="username" [(ngModel)]="user.username" required>
         </div>
 
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" class="form-control" name="password" [(ngModel)]="user.password">
+          <input type="password" class="form-control" name="password" [(ngModel)]="user.password" required>
           <small id="passwordHelpBlock" class="form-text text-muted">
-            Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
+            Your password must be 8-20 characters long, contain letters and numbers, and special characters.
           </small>
         </div>
 
         <div class="form-group">
             <label for="rep-password">Repeat password</label>
-            <input type="password" class="form-control" name="rep_password"  [(ngModel)]="repPassword">
+            <input type="password" class="form-control" name="rep_password"  [(ngModel)]="repPassword" required>
         </div>
 
         <div class="form-group">
             <label for="birthday">Date of birth</label>
-            <input type="date" class="form-control" name="birthday" [(ngModel)]="user.birthday">
+            <input type="date" class="form-control" name="birthday" [(ngModel)]="user.birthday" required> 
         </div>
 
         <div class="form-group">
             <label for="birthplace">Place of birth</label>
-            <input type="text" class="form-control" name="birthplace" [(ngModel)]="user.birthplace">
+            <input type="text" class="form-control" name="birthplace" [(ngModel)]="user.birthplace" required>
         </div>
 
         <div class="form-group">
             <label for="jmbg">JMBG</label>
-            <input type="text" class="form-control" name="jmbg" [(ngModel)]="user.jmbg">
+            <input type="text" class="form-control" name="jmbg" [(ngModel)]="user.jmbg" required>
         </div>
 
         <div class="form-group">
             <label for="telephone">Telephone</label>
-            <input type="tel" class="form-control" name="telephone" [(ngModel)]="user.telephone">
+            <input type="tel" class="form-control" name="telephone" [(ngModel)]="user.telephone" required>
         </div>
 
         <div class="form-group">
             <label for="email">E-mail</label>
-            <input type="email" class="form-control" name="email" [(ngModel)]="user.email">
+            <input type="email" class="form-control" name="email" [(ngModel)]="user.email" required>
             <small id="emailHelpBlock" class="form-text text-muted">
                 You can register up to two accounts to one e-mail address.
             </small>
         </div>
 
         <div class="form-group">
-            <div class="g-recaptcha" data-sitekey="6LfKURIUAAAAAO50vlwWZkyK_G2ywqE52NU7YO0S" data-callback="verifyRecaptchaCallback" data-expired-callback="expiredRecaptchaCallback"></div>
-            <input class="form-control d-none" data-recaptcha="true" required data-error="Please complete the Captcha">
-            <div class="help-block with-errors"></div>
+            <!--<div class="g-recaptcha" data-sitekey="6Le_HswUAAAAAG7q6AR6UAhx9x9BO4Bd19yPf76Z"></div>-->
+            <div #recaptcha ></div>
         </div> 
 
         <div *ngFor="let mess of errorMessage" class="alert alert-danger" role="alert">

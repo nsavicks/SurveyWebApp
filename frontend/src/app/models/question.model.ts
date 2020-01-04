@@ -14,6 +14,7 @@ export class Question {
     labels:string[];
     correct: string[];
     points: number;
+    order_number: number;
 
     labelsWrapper: StringWraper[];
     correctWrapper: StringWraper[];
