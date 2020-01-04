@@ -1,4 +1,4 @@
-<div id="single-container">
+<div id="single-container" class="col-sm-12 col-md-6 col-lg-4">
 
     <div class="survey-desc-item">
         <h6><i class="fa fa-hashtag"></i> ID</h6>
@@ -12,12 +12,12 @@
 
     <div class="survey-desc-item">
         <h6><i class="fa fa-calendar"></i> Start time</h6>
-        {{current.start | date:'dd-MM-yyyy'}}
+        {{current.start | date:'dd-MM-yyyy HH:mm'}}
     </div>
 
     <div class="survey-desc-item">
         <h6><i class="fa fa-calendar"></i> End time</h6>
-        {{current.end | date:'dd-MM-yyyy'}}
+        {{current.end | date:'dd-MM-yyyy HH:mm'}}
     </div>
 
     <div class="survey-desc-item" *ngIf="current && current.type == 1">
@@ -37,7 +37,7 @@
 
     <div class="survey-desc-item" *ngIf="current.type == 0">
         <h6><i class="fa fa-mask"></i> Anonymous</h6>
-        {{current.anonymous == 0 ? 'No': 'Yes'}}
+        {{current.anonymous == 1 ? 'Yes': 'No'}}
     </div>
 
     <div class="survey-desc-item">

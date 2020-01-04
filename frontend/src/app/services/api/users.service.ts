@@ -39,7 +39,7 @@ export class UsersService {
   }
 
   getCountUsersWithEmail(email: string){
-    return this.http.get('http://localhost:5000/api/users/getCountWithEmail/' + 'email',  httpOptions);
+    return this.http.get('http://localhost:5000/api/users/getCountWithEmail/' + email,  httpOptions);
   }
 
   getUserWithUsername(username: string){

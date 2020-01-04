@@ -1,20 +1,18 @@
 
-<div id="login-content">  
+<div id="login-content" class="col-sm-12 col-md-6 col-lg-3">  
 
-    <form (ngSubmit)="login()">
+    <form (ngSubmit)="login()" ngNativeValidate>
         <div class="form-group">
           <label for="username">Username</label>
-          <input type="text" class="form-control" name="username" [(ngModel)]="username">
+          <input type="text" class="form-control" name="username" [(ngModel)]="username" required>
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" class="form-control" name="password" [(ngModel)]="password">
+          <input type="password" class="form-control" name="password" [(ngModel)]="password" required>
         </div>
         <div *ngIf="showError" class="alert alert-danger" role="alert">
           {{errorMessage}}
         </div>
         <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-sign-in"></i> Login</button>
       </form>
-
-  
 </div>

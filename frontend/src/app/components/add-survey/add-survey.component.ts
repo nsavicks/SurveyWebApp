@@ -89,6 +89,9 @@ export class AddSurveyComponent implements OnInit {
 
   RemoveQuestion(i){
     this.questions.splice(i, 1);
+    if (this.current.pages > this.questions.length){
+      this.current.pages = this.questions.length;
+    }
   }
 
   AddField(id){
@@ -135,18 +138,23 @@ export class AddSurveyComponent implements OnInit {
 
   }
 
-  Submit(fromJSON: boolean){
+  Submit(){
     
+    console.log("OVO ");
+    console.log(this.anonChecked);
+
     if (this.anonChecked){
       this.current.anonymous = 1;
+    }
+    else{
+      this.current.anonymous = null;
     }
 
     if (this.shuffleChecked){
       this.current.shuffle = 1;
     }
-
-    if (!this.current.anonymous){
-      this.current.anonymous = null;
+    else{
+      this.current.shuffle = null;
     }
 
     if (!this.current.duration){
@@ -155,10 +163,6 @@ export class AddSurveyComponent implements OnInit {
 
     if (!this.current.pages){
       this.current.pages = null;
-    }
-
-    if (!this.current.shuffle){
-      this.current.shuffle = null;
     }
 
     for (var i = 0; i < this.questions.length; i++){
@@ -211,6 +215,7 @@ export class AddSurveyComponent implements OnInit {
 
         }
 
+        this.toastr.success("Added successfully.");
         this.router.navigate(['home']);
 
       }

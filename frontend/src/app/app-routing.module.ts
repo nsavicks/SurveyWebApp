@@ -18,20 +18,20 @@ import { AddUpdateUserComponent } from './components/add-update-user/add-update-
 
 
 const routes: Routes = [
-  {path: '', component: LoginComponent},
+  {path: '', component: HomeComponent, canActivate: [UserGuardService]},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'dashboard', component: DashboardComponent, canActivate: [AdministratorGuardService]},
   {path: 'home', component: HomeComponent, canActivate: [UserGuardService]},
   {path: 'add-survey-test', component: AddSurveyComponent, canActivate: [AuthorGuardService]},
-  {path: 'single/:id', component: SingleComponent},
-  {path: 'work/:id', component: WorkComponent},
-  {path: 'result/:username/:surveyId', component: ResultComponent},
-  {path: 'report/:id', component: ReportComponent},
-  {path: 'my-surveys-tests', component: MySurveysComponent},
-  {path: 'change-password', component: ChangePasswordComponent},
-  {path: 'add-update-user', component: AddUpdateUserComponent},
-  {path: 'add-update-user/:username', component: AddUpdateUserComponent}
+  {path: 'single/:id', component: SingleComponent, canActivate: [UserGuardService]},
+  {path: 'work/:id', component: WorkComponent, canActivate: [UserGuardService]},
+  {path: 'result/:username/:surveyId', component: ResultComponent, canActivate: [UserGuardService]},
+  {path: 'report/:id', component: ReportComponent, canActivate: [AuthorGuardService]},
+  {path: 'my-surveys-tests', component: MySurveysComponent, canActivate: [AuthorGuardService]},
+  {path: 'change-password', component: ChangePasswordComponent, canActivate: [UserGuardService]},
+  {path: 'add-update-user', component: AddUpdateUserComponent, canActivate: [AdministratorGuardService]},
+  {path: 'add-update-user/:username', component: AddUpdateUserComponent , canActivate: [AdministratorGuardService]}
 ];
 
 @NgModule({

@@ -1,6 +1,5 @@
-<div id="work-container">
+<div id="work-container" class="col-sm-12 col-md-8 col-lg-6">
     
-    <h1 *ngIf="current">{{current.title}}</h1>
     <h5 *ngIf="current && current.type == 1"><i class="fa fa-stopwatch"></i> {{current.duration - elapsed}}s</h5>
 
     <form name="survey-form">
@@ -15,34 +14,34 @@
                 <div [ngSwitch]="q.type">
                     <div *ngSwitchCase="1">
                         <div class="form-group" *ngFor="let label of q.labels; let j = index">
-                            <label for="number_input_{{offset + i}}_{{j}}">{{label}}</label>
-                            <input type="number" class="form-control" name="number_input_{{offset + i}}_{{j}}" *ngIf="answers && answers[offset + q.order_number]" [(ngModel)]="answers[offset + q.order_number].answers[j]" (change)="handleChange()">
+                            <label for="number_input_{{q.order_number}}_{{j}}">{{label}}</label>
+                            <input type="number" class="form-control" name="number_input_{{q.order_number}}_{{j}}" *ngIf="answers && answers[q.order_number]" [(ngModel)]="answers[q.order_number].answers[j]" (change)="handleChange()">
                         </div>
                     </div>
                     <div *ngSwitchCase="2">
                         <div class="form-group" *ngFor="let label of q.labels; let j = index">
-                            <label for="text_input_{{offset + i}}_{{j}}">{{label}}</label>
-                            <input type="text" class="form-control" name="text_input_{{offset + i}}_{{j}}" *ngIf="answers && answers[offset + q.order_number]" [(ngModel)]="answers[offset + q.order_number].answers[j]"  (change)="handleChange()">
+                            <label for="text_input_{{q.order_number}}_{{j}}">{{label}}</label>
+                            <input type="text" class="form-control" name="text_input_{{q.order_number}}_{{j}}" *ngIf="answers && answers[q.order_number]" [(ngModel)]="answers[q.order_number].answers[j]"  (change)="handleChange()">
                         </div>
                     </div>
                     <div *ngSwitchCase="3">
                         <div class="form-group" *ngFor="let label of q.labels; let j = index">
-                            <label for="textarea_input_{{offset + i}}_{{j}}">{{label}}</label>
-                            <textarea class="form-control" name="textarea_input_{{offset + i}}_{{j}}" rows="5" *ngIf="answers && answers[offset + q.order_number]" [(ngModel)]="answers[offset + q.order_number].answers[j]" (change)="handleChange()"></textarea>
+                            <label for="textarea_input_{{q.order_number}}_{{j}}">{{label}}</label>
+                            <textarea class="form-control" name="textarea_input_{{q.order_number}}_{{j}}" rows="5" *ngIf="answers && answers[q.order_number]" [(ngModel)]="answers[q.order_number].answers[j]" (change)="handleChange()"></textarea>
                         </div>
                     </div>
                     <div *ngSwitchCase="4">
                         <div class="form-check" *ngFor="let label of q.labels; let j = index">
-                            <input class="form-check-input" type="radio" name="radio_input_{{offset + i}}" id="radio_input_{{offset + i}}_{{j}}" *ngIf="answers && answers[offset + q.order_number]" [checked]="answers[offset + q.order_number].answers[j] == '1'" (change)="handleRadioCheck(offset + q.order_number,j)">
-                            <label class="form-check-label" for="radio_input_{{offset + i}}_{{j}}">
+                            <input class="form-check-input" type="radio" name="radio_input_{{q.order_number}}" id="radio_input_{{q.order_number}}_{{j}}" *ngIf="answers && answers[q.order_number]" [checked]="answers[q.order_number].answers[j] == '1'" (change)="handleRadioCheck(q.order_number,j)">
+                            <label class="form-check-label" for="radio_input_{{q.order_number}}_{{j}}">
                               {{label}}
                             </label>
                           </div>
                     </div>
                     <div *ngSwitchCase="5">
                         <div class="form-check" *ngFor="let label of q.labels; let j = index">
-                            <input class="form-check-input" type="checkbox" value="{{j}}" name="input_check_{{offset + i}}_{{j}}" *ngIf="answers && answers[offset + q.order_number]" [checked]="answers[offset + q.order_number].answers[j] == '1'" (change)="handleCheck(offset + q.order_number,j)">
-                            <label class="form-check-label" for="input_check_{{offset + i}}_{{j}}">
+                            <input class="form-check-input" type="checkbox" value="{{j}}" name="input_check_{{q.order_number}}_{{j}}" *ngIf="answers && answers[q.order_number]" [checked]="answers[q.order_number].answers[j] == '1'" (change)="handleCheck(q.order_number,j)">
+                            <label class="form-check-label" for="input_check_{{q.order_number}}_{{j}}">
                                 {{label}}
                             </label>
                           </div>
@@ -67,7 +66,7 @@
             </ul>
         </div>
 
-        <div *ngIf="currentPage == maxPage">
+        <div>
             <hr/>
             <h4>Answered questions</h4>
             <div class="progress">
@@ -76,7 +75,7 @@
             </div>
         </div>
 
-        <div *ngIf="currentPage == maxPage">
+        <div>
             <hr/>
             <button type="button" (click)="Submit()" class="btn btn-block btn-success"><i class="fa fa-check"></i> Submit</button> 
             <button type="button" (click)="Save()" class="btn btn-block btn-danger" *ngIf="current && current.type == 0" ><i class="fa fa-save"></i> Save</button>

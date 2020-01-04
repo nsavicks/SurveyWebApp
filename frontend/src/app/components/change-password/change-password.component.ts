@@ -3,6 +3,7 @@ import { AppComponent } from 'src/app/app.component';
 import { UsersService } from 'src/app/services/api/users.service';
 import decode from 'jwt-decode'
 import { User } from 'src/app/models/user.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-change-password',
@@ -20,7 +21,8 @@ export class ChangePasswordComponent implements OnInit {
 
   constructor(
     private appComponent: AppComponent,
-    private userService: UsersService
+    private userService: UsersService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -53,8 +55,17 @@ export class ChangePasswordComponent implements OnInit {
       return;
     }
 
+    var regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&.])(?=.{8,})");
+
+    if (!regex.test(this.newPassword)){
+      this.errorMessage += "*Password doesn't match required form";
+      this.showError = true;
+      return;
+    }
+
     this.userService.changePassword(this.currentUser.username, this.newPassword).subscribe(
       user => {
+        this.toastr.success("Password changed successfully.")
         this.appComponent.Logout();
       }
     )

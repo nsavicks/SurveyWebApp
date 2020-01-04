@@ -1,4 +1,4 @@
-<div id="add-container">
+<div id="add-container" class="col-sm-12 col-md-8 col-lg-4">
 
     <form name="load-form">
 
@@ -15,24 +15,24 @@
         
     </form>
 
-    <form name="add-form">
+    <form name="add-form" (ngSubmit)="Submit()" ngNativeValidate>
 
         <h2>Survey/Test info</h2>
         <hr/>
 
         <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" class="form-control" [(ngModel)]="current.title" name="title">
+            <input type="text" class="form-control" [(ngModel)]="current.title" name="title" required>
         </div>
 
         <div class="form-group">
             <label for="desc">Description</label>
-            <textarea class="form-control" id="desc" rows="5" [(ngModel)]="current.description" name="desc"></textarea>
+            <textarea class="form-control" id="desc" rows="5" [(ngModel)]="current.description" name="desc" required></textarea>
         </div>
 
         <div class="form-group">
             <label for="type">Type</label>
-            <select class="form-control" name="type" [(ngModel)]="current.type">
+            <select class="form-control" name="type" [(ngModel)]="current.type" required>
                 <option value="0">Survey</option>
                 <option value="1">Test</option>
             </select>
@@ -40,26 +40,26 @@
 
         <div class="form-group">
             <label for="start">Start date</label>
-            <input type="datetime-local" class="form-control" name="start" [(ngModel)]="current.start">
+            <input type="datetime-local" class="form-control" name="start" [(ngModel)]="current.start" required>
         </div>
 
         <div class="form-group">
             <label for="end">End date</label>
-            <input type="datetime-local" class="form-control" name="end" [(ngModel)]="current.end">
+            <input type="datetime-local" class="form-control" name="end" [(ngModel)]="current.end" required>
         </div>
 
         <div class="form-group" *ngIf="current.type == 1">
             <label for="duration">Duration</label>
-            <input type="number" class="form-control" name="duration" [(ngModel)]="current.duration">
+            <input type="number" class="form-control" name="duration" [(ngModel)]="current.duration" min="1" max="180" required>
         </div>
 
         <div class="form-group" *ngIf="current.type == 0">
             <label for="pages">Number of pages</label>
-            <input type="number" class="form-control" name="pages" [(ngModel)]="current.pages">
+            <input type="number" class="form-control" name="pages" [(ngModel)]="current.pages" min="1" max="{{questions.length}}" required>
         </div>
 
         <div class="form-group" *ngIf="current.type == 0">
-            <input class="form-check-input" type="checkbox" name="anon" [(ngModel)]="anonChecked" [checked]="true">
+            <input class="form-check-input" type="checkbox" name="anon" [(ngModel)]="anonChecked">
             <label class="form-check-label" for="anon">
                 Anonymous
             </label>
@@ -93,7 +93,7 @@
         </div>
 
         <div class="collapse" id="database-questions">
-            <table class="table table-striped">
+            <table class="table table-striped table-responsive-sm">
                 <thead>
                   <tr>
                     <th scope="col">#ID</th>
@@ -134,12 +134,12 @@
 
                 <div class="form-group">
                     <label for="text">Question text</label>
-                    <input type="text" class="form-control" name="text_{{i}}" [(ngModel)]="q.text">
+                    <input type="text" class="form-control" name="text_{{i}}" [(ngModel)]="q.text" required>
                 </div>
 
                 <div class="form-group" *ngIf="current.type == 1">
                     <label for="points">Question points</label>
-                    <input type="number" class="form-control" name="points_{{i}}" [(ngModel)]="q.points">
+                    <input type="number" class="form-control" name="points_{{i}}" [(ngModel)]="q.points" required>
                 </div>
 
                 <button type="button" class="btn btn-success" (click)="AddField(i)"><i class="fa fa-plus"></i> Add field</button>
@@ -171,7 +171,7 @@
 
         <hr/>
 
-        <button type="button" (click)="Submit()" class="btn btn-block btn-success"><i class="fa fa-check"></i> Submit</button> 
+        <button type="submit" class="btn btn-block btn-success"><i class="fa fa-check"></i> Submit</button> 
 
     </form>
 

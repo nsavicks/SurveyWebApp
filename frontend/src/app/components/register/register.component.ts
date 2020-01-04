@@ -4,6 +4,7 @@ import { UsersService } from '../../services/api/users.service';
 import { Router } from '@angular/router'
 import { User } from '../../models/user.model';
 import { FileUploader, FileItem } from 'ng2-file-upload';
+import { ToastrService } from 'ngx-toastr';
 
 const URL = 'http://localhost:5000/api/upload';
 
@@ -26,11 +27,17 @@ export class RegisterComponent implements OnInit {
 
   @ViewChild('recaptcha', {static: true }) recaptchaElement: ElementRef;
 
-  constructor(private userService: UsersService, private router: Router) { }
+  constructor(private userService: UsersService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.user = new User();
     this.errorMessage = [];
+
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      this.router.navigate(['home']);
+    }
 
     this.addRecaptchaScript();
 
@@ -75,6 +82,10 @@ export class RegisterComponent implements OnInit {
     this.userService.getCountUsersWithEmail(this.user.email).subscribe(
       data => {
 
+        console.log(data);
+        console.log(data.count);
+        console.log(data['count']);
+        console.log(this.user.email);
         if (data.count >= 2){
           this.errorMessage.push("*E-mail address is already associated with two accounts.");
         }
@@ -105,6 +116,7 @@ export class RegisterComponent implements OnInit {
     
                 this.userService.addUser(this.user).subscribe(
                   user => {
+                    this.toastr.success("Registration successfull.")
                     this.router.navigate(['login']);
                   }
                 );

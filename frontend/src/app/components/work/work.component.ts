@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SurveyTestService } from 'src/app/services/api/survey-test.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Question } from 'src/app/models/question.model';
@@ -15,7 +15,7 @@ import { ToastrService } from 'ngx-toastr'
   templateUrl: './work.component.html',
   styleUrls: ['./work.component.css']
 })
-export class WorkComponent implements OnInit {
+export class WorkComponent implements OnInit, OnDestroy {
 
   id: string;
   allQuestions: Question[];
@@ -29,6 +29,7 @@ export class WorkComponent implements OnInit {
   totalPoints: number;
   maxPoints: number;
   points: number[];
+  submited: boolean;
   
   // Pagination
   currentPage: number;
@@ -45,6 +46,7 @@ export class WorkComponent implements OnInit {
 
   ngOnInit() {
 
+    this.submited = false;
     this.id = this.route.snapshot.paramMap.get('id');
     this.percent = 0;
 
@@ -75,8 +77,8 @@ export class WorkComponent implements OnInit {
             () => {
               this.elapsed++;
 
-              if (this.current.duration > 15 && this.current.duration - this.elapsed == 15){
-                // TODO change color to red
+              if (this.current.duration > 15 && this.current.duration - this.elapsed == 10){
+                this.toastr.warning("10 seconds remaining!");
               }
 
               if (this.elapsed == this.current.duration){
@@ -89,8 +91,22 @@ export class WorkComponent implements OnInit {
 
         }
 
+        this.LoadQuestions();
+
       }
     );
+
+  }
+
+  ngOnDestroy(){
+    
+    if (this.current.type == 1 && !this.submited){
+      this.Submit();
+    }
+
+  }
+
+  LoadQuestions(){
 
     this.surveyTestService.getQuestions(this.id).subscribe(
       q => {
@@ -113,7 +129,7 @@ export class WorkComponent implements OnInit {
           this.workService.getWork(this.currentUser.username, this.current.id).subscribe(
             prevWork => {
               
-              //console.log(prevWork);
+              console.log(prevWork);
 
               if (prevWork[0] != null){
                 
@@ -155,7 +171,7 @@ export class WorkComponent implements OnInit {
               }
               else{
                 // if there is no previouse state
-
+                console.log("NIJE NASAO");
                 this.allQuestions.forEach(q => {
 
                   let obj = JSON.parse(q.solutions);
@@ -175,7 +191,7 @@ export class WorkComponent implements OnInit {
         else{
 
           // For test there is no loading previous state
-
+          
           this.allQuestions.forEach(q => {
 
             console.log(q.solutions);
@@ -191,7 +207,6 @@ export class WorkComponent implements OnInit {
 
       }
     );
-    
 
   }
 
@@ -243,6 +258,8 @@ export class WorkComponent implements OnInit {
   }
 
   UpdateWork(finished){
+
+    this.submited = true;
 
     if (this.current.type == 1)
       this.CalculatePoints();
@@ -339,7 +356,9 @@ export class WorkComponent implements OnInit {
     }
 
     this.percent = Math.trunc(cntResponded / cntQuestions * 100);
-    document.getElementById("progress-bar").style.width = this.percent + "%";
+    var pb = document.getElementById("progress-bar");
+    if (pb)
+      pb.style.width = this.percent + "%";
 
   }
 
@@ -381,7 +400,6 @@ export class WorkComponent implements OnInit {
     this.offset += this.noQuestPerPage[this.currentPage - 1];
     this.currentPage++;
     this.questions = this.allQuestions.slice(this.offset, this.offset + this.noQuestPerPage[this.currentPage - 1]);
-
   }
 
   ShuffleQuestions(){

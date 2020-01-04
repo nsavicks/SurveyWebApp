@@ -21,6 +21,12 @@ export class LoginComponent implements OnInit {
     this.showError = false;
     this.errorMessage = "";
 
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      this.router.navigate(['home']);
+    }
+
     this.appComponent.changeHeader("Login", "sign-in");
   }
 

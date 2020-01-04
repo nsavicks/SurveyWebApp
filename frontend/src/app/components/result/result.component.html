@@ -1,5 +1,5 @@
 
-<div id="result-container">
+<div id="result-container" class="col-sm-12 col-md-8 col-lg-6">
     
     <h5 *ngIf="current.type == 1"><i class="fa fa-stopwatch"></i> {{qa[0].time}}s</h5>
     <h5 *ngIf="current.type == 1"><i class="fa fa-star"></i> {{qa[0].total_points  | number : '1.2-2' }} / {{maxPoints}}</h5>
