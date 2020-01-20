@@ -4,6 +4,7 @@ import { SurveyTestService } from 'src/app/services/api/survey-test.service';
 import { SurveyTest } from 'src/app/models/survey-test.model';
 import { User } from 'src/app/models/user.model';
 import decode from 'jwt-decode'
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-my-surveys',
@@ -20,7 +21,8 @@ export class MySurveysComponent implements OnInit {
 
   constructor(
     private appComponent: AppComponent,
-    private surveyTestService: SurveyTestService
+    private surveyTestService: SurveyTestService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -190,7 +192,4 @@ export class MySurveysComponent implements OnInit {
 
   }
 
-  Delete(item){
-    console.log("OPZOVA");
-  }
 }

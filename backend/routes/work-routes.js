@@ -49,7 +49,8 @@ router.get('/getQA/:username&:surveyId', (req,res) => {
     and hq.question_id = q.id 
     and hq.survey_test_id = :id 
     and username = :username 
-    and a.survey_test_id = :id`,
+    and a.survey_test_id = :id
+    order by hq.order_number ASC`,
      {
          replacements: 
          {

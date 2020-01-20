@@ -24,9 +24,9 @@ export class ResultComponent implements OnInit {
   current: SurveyTest;
   currentUser: User;
   work: Work;
-  qa: Object[];
-  solutions: object[];
-  answers: object[];
+  qa: any[];
+  solutions: any[];
+  answers: any[];
   points: number[];
   totalPoints: number;
   maxPoints: number;

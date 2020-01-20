@@ -17,7 +17,7 @@
 
     <div class="survey-desc-item">
         <h6><i class="fa fa-calendar"></i> End time</h6>
-        {{current.end | date:'dd-MM-yyyy HH:mm'}}
+        {{current.end | date:'dd-MM-yyyy HH:mm'}} <span class="badge badge-danger" *ngIf="expired">Expired</span>
     </div>
 
     <div class="survey-desc-item" *ngIf="current && current.type == 1">

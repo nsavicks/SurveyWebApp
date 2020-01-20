@@ -324,8 +324,14 @@ export class WorkComponent implements OnInit, OnDestroy {
         }
 
       }
-
-      this.points[q.order_number] = (noCorrect / total) * q.points;
+      if (q.type == 4){
+        if (noCorrect < total) this.points[q.order_number] = 0;
+        else this.points[q.order_number] = q.points;
+      }
+      else{
+        this.points[q.order_number] = (noCorrect / total) * q.points;
+      }
+      
       this.totalPoints += this.points[q.order_number];
       this.maxPoints += q.points;
     }

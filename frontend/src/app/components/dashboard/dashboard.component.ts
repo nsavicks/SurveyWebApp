@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../../models/user.model'; 
 import { UsersService } from '../../services/api/users.service';
 import { AppComponent } from 'src/app/app.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +16,7 @@ export class DashboardComponent implements OnInit {
   allUsername: string;
   pendingUsername: string;
 
-  constructor(private usersService: UsersService, private appComponent: AppComponent) { }
+  constructor(private usersService: UsersService, private appComponent: AppComponent, private toastr: ToastrService) { }
 
   ngOnInit() {
 
@@ -39,6 +40,7 @@ export class DashboardComponent implements OnInit {
     
     this.usersService.acceptUser(user.username).subscribe(
       user => {
+        this.toastr.success("Accepted successfully.")
         this.usersService.getPendingUsers().subscribe(
           users => {
             this.pendingUsers = users;
@@ -53,7 +55,7 @@ export class DashboardComponent implements OnInit {
 
     this.usersService.deleteUser(user.username).subscribe(
       code => {
-        
+        this.toastr.success("Deleted successfully.")
         this.usersService.getAllUsers().subscribe(
           users => {
             this.allUsers = users;

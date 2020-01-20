@@ -7,6 +7,7 @@ import decode from 'jwt-decode'
 import { Work } from 'src/app/models/work.model';
 import { WorkService } from 'src/app/services/api/work.service';
 import { AppComponent } from 'src/app/app.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-single',
@@ -27,7 +28,8 @@ export class SingleComponent implements OnInit {
     private surveyTestService: SurveyTestService,
     private workService: WorkService,
     private router: Router,
-    private appComponent: AppComponent
+    private appComponent: AppComponent,
+    private toastr: ToastrService
     ) { }
 
   ngOnInit() {
@@ -72,6 +74,7 @@ export class SingleComponent implements OnInit {
     
     this.surveyTestService.deleteSurveyTest(this.current.id).subscribe(
       code => {
+        this.toastr.success("Deleted successfully.");
         this.router.navigate(['my-surveys-tests']);
       }
     );

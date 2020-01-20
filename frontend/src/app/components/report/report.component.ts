@@ -19,7 +19,7 @@ export class ReportComponent implements OnInit {
   id: string;
   current: SurveyTest;
   maxPoints: number;
-  works: Object[];
+  works: any[];
   graphData: number[]
   isSurvey: boolean;
 

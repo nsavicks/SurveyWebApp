@@ -47,19 +47,19 @@ export class SurveyTestService {
     return this.http.get<Question[]>('http://localhost:5000/api/survey-test/getAllQuestions/');
   }
 
-  addSurveyTest(survey) {
+  addSurveyTest(survey): any {
     return this.http.post('http://localhost:5000/api/survey-test/add', survey);
   }
 
-  addQuestion(question) {
+  addQuestion(question): any {
     return this.http.post('http://localhost:5000/api/survey-test/addQuestion', question);
   }
 
-  addHasQuestion(survey, question, ord, points) {
+  addHasQuestion(survey, question, ord, points): any {
     return this.http.post('http://localhost:5000/api/survey-test/addHasQuestion', [survey, question, ord, points]);
   }
 
-  deleteSurveyTest(sid){
+  deleteSurveyTest(sid): any{
     return this.http.delete('http://localhost:5000/api/survey-test/delete/' + sid, httpOptions);
   }
 

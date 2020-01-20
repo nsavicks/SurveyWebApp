@@ -18,19 +18,19 @@ export class WorkService {
     return this.http.get<Work>('http://localhost:5000/api/work/getWork/' + username + '&' + id);
   }
 
-  getFinishedWorks(id): Observable<Object[]> {
+  getFinishedWorks(id): Observable<any[]> {
     return this.http.get<Object[]>('http://localhost:5000/api/work/getFinishedWorks/' + id);
   }
 
-  getQA(username, id): Observable<Object[]> {
+  getQA(username, id): Observable<any[]> {
     return this.http.get<Object[]>('http://localhost:5000/api/work/getQA/' + username + '&' + id);
   }
 
-  addWork(user, survey, finished, time, points) {
+  addWork(user, survey, finished, time, points) : any{
     return this.http.post('http://localhost:5000/api/work/add', [user, survey, finished, time, points]);
   }
 
-  deleteWork(username, sid) {
+  deleteWork(username, sid): any {
     return this.http.delete('http://localhost:5000/api/work/deleteWork/' + sid + '&' + username);
   }
   
